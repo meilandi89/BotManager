@@ -76,7 +76,9 @@
   <ItemGroup>
     <Compile Include="Manager\BotFactory.vb" />
     <Compile Include="Manager\Bots.vb" />
+    <Compile Include="Manager\Helper\Config.vb" />
     <Compile Include="Manager\Helper\IO.vb" />
+    <Compile Include="Manager\Helper\Json.vb" />
     <Compile Include="Manager\Properties\Bot.vb" />
     <Compile Include="Manager\Type\Haxton.vb" />
     <Compile Include="Manager\Type\Maclone.vb" />
