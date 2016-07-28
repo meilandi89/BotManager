@@ -158,5 +158,10 @@ Namespace UserInterface
             Bots.Items(botProperties.ProcessId).Kill(False)
             Bots.Items(botProperties.ProcessId).Start()
         End Sub
+
+        Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
+            Me.LinkLabel1.LinkVisited = True
+            System.Diagnostics.Process.Start("http://www.ownedcore.com/forums/pokemon-go/pokemon-go-hacks-cheats/566095-bot-manager-auto-update-includes-multiple-bots-multi-account.html")
+        End Sub
     End Class
 End NameSpace

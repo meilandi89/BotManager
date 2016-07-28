@@ -32,6 +32,7 @@
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.btnRestart = New System.Windows.Forms.Button()
+        Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
         Me.SuspendLayout
         '
         'btnAdd
@@ -103,11 +104,22 @@
         Me.btnRestart.Text = "Restart Selected"
         Me.btnRestart.UseVisualStyleBackColor = true
         '
+        'LinkLabel1
+        '
+        Me.LinkLabel1.AutoSize = true
+        Me.LinkLabel1.Location = New System.Drawing.Point(597, 13)
+        Me.LinkLabel1.Name = "LinkLabel1"
+        Me.LinkLabel1.Size = New System.Drawing.Size(39, 13)
+        Me.LinkLabel1.TabIndex = 12
+        Me.LinkLabel1.TabStop = true
+        Me.LinkLabel1.Text = "Rep++"
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(650, 357)
+        Me.Controls.Add(Me.LinkLabel1)
         Me.Controls.Add(Me.btnRestart)
         Me.Controls.Add(Me.ComboBox1)
         Me.Controls.Add(Me.Label1)
@@ -130,5 +142,6 @@ End Sub
         Friend WithEvents Label1 As Label
         Friend WithEvents ComboBox1 As ComboBox
         Friend WithEvents btnRestart As Button
+        Friend WithEvents LinkLabel1 As LinkLabel
     End Class
 End NameSpace
