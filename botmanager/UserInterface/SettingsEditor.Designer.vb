@@ -23,52 +23,59 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-            Me.btnSave = New System.Windows.Forms.Button()
-            Me.btnCancel = New System.Windows.Forms.Button()
-            CType(Me.DataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
-            Me.SuspendLayout
-            '
-            'DataGridView1
-            '
-            Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.DataGridView1.Location = New System.Drawing.Point(12, 12)
-            Me.DataGridView1.Name = "DataGridView1"
-            Me.DataGridView1.Size = New System.Drawing.Size(400, 369)
-            Me.DataGridView1.TabIndex = 0
-            '
-            'btnSave
-            '
-            Me.btnSave.Location = New System.Drawing.Point(337, 387)
-            Me.btnSave.Name = "btnSave"
-            Me.btnSave.Size = New System.Drawing.Size(75, 23)
-            Me.btnSave.TabIndex = 1
-            Me.btnSave.Text = "Save"
-            Me.btnSave.UseVisualStyleBackColor = true
-            '
-            'btnCancel
-            '
-            Me.btnCancel.Location = New System.Drawing.Point(256, 387)
-            Me.btnCancel.Name = "btnCancel"
-            Me.btnCancel.Size = New System.Drawing.Size(75, 23)
-            Me.btnCancel.TabIndex = 2
-            Me.btnCancel.Text = "Cancel"
-            Me.btnCancel.UseVisualStyleBackColor = true
-            '
-            'SettingsEditor
-            '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(424, 417)
-            Me.Controls.Add(Me.btnCancel)
-            Me.Controls.Add(Me.btnSave)
-            Me.Controls.Add(Me.DataGridView1)
-            Me.Name = "SettingsEditor"
-            Me.Text = "SettingsEditor"
-            CType(Me.DataGridView1,System.ComponentModel.ISupportInitialize).EndInit
-            Me.ResumeLayout(false)
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.btnSave = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        CType(Me.DataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Location = New System.Drawing.Point(12, 12)
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.Size = New System.Drawing.Size(400, 369)
+        Me.DataGridView1.TabIndex = 0
+        '
+        'btnSave
+        '
+        Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnSave.Location = New System.Drawing.Point(337, 387)
+        Me.btnSave.Name = "btnSave"
+        Me.btnSave.Size = New System.Drawing.Size(75, 23)
+        Me.btnSave.TabIndex = 1
+        Me.btnSave.Text = "Save"
+        Me.btnSave.UseVisualStyleBackColor = true
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnCancel.Location = New System.Drawing.Point(256, 387)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
+        Me.btnCancel.TabIndex = 2
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = true
+        '
+        'SettingsEditor
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(424, 417)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnSave)
+        Me.Controls.Add(Me.DataGridView1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
+        Me.Name = "SettingsEditor"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+        Me.Text = "Settings Editor"
+        CType(Me.DataGridView1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
 
-        End Sub
+End Sub
 
         Friend WithEvents DataGridView1 As DataGridView
         Friend WithEvents btnSave As Button

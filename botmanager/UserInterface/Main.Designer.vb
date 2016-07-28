@@ -23,6 +23,7 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.btnAdd = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.btnRemove = New System.Windows.Forms.Button()
@@ -114,6 +115,7 @@
         Me.Controls.Add(Me.btnRemove)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnAdd)
+        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
         Me.Name = "Main"
         Me.Text = "Pokemon Go Bot Manager"
         Me.ResumeLayout(false)
