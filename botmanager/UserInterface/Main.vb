@@ -12,7 +12,7 @@ Namespace UserInterface
                 botProperties.BotClass = "BotManager.Manager.Type.Haxton"
             ElseIf ComboBox1.Text = "Spegeli" Then
                 botProperties.BotClass = "BotManager.Manager.Type.Spegeli"
-            Else 
+            Else
                 botProperties = Nothing
                 MsgBox("Select bot type")
                 Exit Sub
@@ -150,5 +150,13 @@ Namespace UserInterface
             Return False
         End Function
 
+        Private Sub btnRestart_Click(sender As Object, e As EventArgs) Handles btnRestart.Click
+            Dim selectedTab As TabPage = TabControl1.SelectedTab
+            Dim botProperties = DirectCast(selectedTab.Tag, Bot)
+
+            selectedTab.Text = botProperties.GetSettingValue("PtcUsername")
+            Bots.Items(botProperties.ProcessId).Kill(False)
+            Bots.Items(botProperties.ProcessId).Start()
+        End Sub
     End Class
 End NameSpace

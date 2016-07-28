@@ -30,6 +30,7 @@
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.btnRestart = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'btnAdd
@@ -92,11 +93,21 @@
         Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox1.TabIndex = 10
         '
+        'btnRestart
+        '
+        Me.btnRestart.Location = New System.Drawing.Point(108, 9)
+        Me.btnRestart.Name = "btnRestart"
+        Me.btnRestart.Size = New System.Drawing.Size(97, 20)
+        Me.btnRestart.TabIndex = 11
+        Me.btnRestart.Text = "Restart Selected"
+        Me.btnRestart.UseVisualStyleBackColor = true
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(650, 357)
+        Me.Controls.Add(Me.btnRestart)
         Me.Controls.Add(Me.ComboBox1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btnEdit)
@@ -116,5 +127,6 @@ End Sub
         Friend WithEvents OpenFileDialog As OpenFileDialog
         Friend WithEvents Label1 As Label
         Friend WithEvents ComboBox1 As ComboBox
+        Friend WithEvents btnRestart As Button
     End Class
 End NameSpace
