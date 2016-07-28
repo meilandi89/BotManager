@@ -1,92 +1,66 @@
-﻿Imports System.Configuration
-Imports System.Threading
+﻿Imports System.Threading
+Imports BotManager.Manager.Helpers
 Imports BotManager.Manager.Properties
+Imports BotManager.Windows
 
 Namespace Manager.Type
-    Public Class Generic
-        Public Shared Function RunBot(ByRef bot As Bot) As IntPtr
-            CreateNewUserSettings(bot)
+    Public MustInherit Class Generic
+        Protected BotProperties As Bot
+        Private ReadOnly _timer As New Timers.Timer(1000)
+        Public MustOverride Sub WriteSettings()
+        Public MustOverride Sub ReadSettings()
 
-            Dim pInfo As New ProcessStartInfo
-            pInfo.WorkingDirectory = Path.GetDirectoryName(bot.TempExecutablePath)
-            pInfo.FileName = Path.GetFileName(bot.TempExecutablePath)
-
-            Dim p As Process = Process.Start(pInfo)
-
-            Thread.Sleep(100)
-
-            bot.ProcessId = p.Id
-            bot.Handle = p.MainWindowHandle
-
-            bot.IsRunning = True
-            Return p.MainWindowHandle
-        End Function
-
-        Private Shared Sub CreateNewUserSettings(ByRef bot As Bot)
-            Dim fileMap As New ExeConfigurationFileMap()
-            fileMap.ExeConfigFilename =
-                bot.TempExecutablePath & ".config"
-            Dim config As Configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
-                                                                                          ConfigurationUserLevel.None)
-            Dim settingsSection 
-            Dim tempSetting 
-
-            If bot.IsHaxton Then
-                settingsSection = config.AppSettings
-                tempSetting = new KeyValueConfigurationElement("TempSetting", "temp")
-            Else 
-                settingsSection = config.GetSection("userSettings/PokemonGo.RocketAPI.Console.UserSettings")
-                tempSetting = new SettingElement("TempSetting", SettingsSerializeAs.String)
-            End If
-
-            settingsSection.Settings.Add(tempSetting)
-
-            If bot.IsHaxton Then
-                For Each setting As String In bot.SettingKeys
-                    DirectCast(settingsSection, AppSettingsSection).Settings.Item(Setting).Value = bot.GetSettingValue(setting).ToString()
-                Next
-                DirectCast(settingsSection, AppSettingsSection).Settings.Remove("TempSetting")
-            Else 
-                For Each setting As String In bot.SettingKeys
-                    settingsSection.Settings.Get(Setting).Value.ValueXml.LastChild.InnerText = bot.GetSettingValue(setting).ToString()
-                Next
-                settingsSection.Settings.Remove(tempSetting)
-            End If
-
-            config.Save(ConfigurationSaveMode.Full)
+        Public Sub New(ByRef botProperties As Bot)
+            Me.BotProperties = botProperties
+            Initialize()
+            _timer.Stop()
+            AddHandler _timer.Elapsed, AddressOf HandleTimer
         End Sub
 
-        Public Shared Sub SetSettings(ByRef bot As Bot)
-            Dim fileMap As New ExeConfigurationFileMap()
-            fileMap.ExeConfigFilename =
-                bot.TempExecutablePath & ".config"
-            Dim config As Configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
-                                                                                          ConfigurationUserLevel.None)
-            Dim settingsSection
-            settingsSection = config.GetSection("userSettings/PokemonGo.RocketAPI.Console.UserSettings")
-
-            If settingsSection is Nothing Then
-                bot.IsHaxton = True
-                settingsSection = config.AppSettings
-            End If
-            If bot.IsHaxton Then
-                For Each setting  In settingsSection.Settings
-                    bot.AddKeyValue(setting.[Key], setting.Value.ToString())
-                Next
-            Else 
-                For Each setting  In settingsSection.Settings
-                    bot.AddKeyValue(setting.Name, setting.Value.ValueXml.InnerText)
-                Next
+        Private Sub Initialize()
+            If File.Exists(BotProperties.ExecutablePath) Then
+                BotProperties.TempExecutablePath = IO.CopyFolder(
+                    Path.GetDirectoryName(BotProperties.ExecutablePath)) & "\" &
+                                                   Path.GetFileName(BotProperties.ExecutablePath)
+            Else
+                MsgBox("Path doesn't Exists")
+                My.Settings.BotsProperties.Items.Remove(BotProperties)
+                Exit Sub
             End If
         End Sub
 
-        Public Shared Sub StopBot(bot As Bot)
-            Try
-                Dim p As Process = Process.GetProcessById(bot.ProcessId)
-                p.Kill()
-                bot.IsRunning = False
-            Catch
-            End Try
+        Public Sub Start()
+            WriteSettings()
+            Dim p As Process = CmdLine.Run(BotProperties)
+            If Bots.Items.ContainsKey(BotProperties.ProcessId) Then Bots.Items.Remove(BotProperties.ProcessId)
+
+            BotProperties.ProcessId = p.Id
+            BotProperties.Handle = p.MainWindowHandle
+            BotProperties.IsRunning = True
+
+            Api.SetParent(botProperties.Handle, botProperties.TabPageHandle)
+            Api.SetWindowPos(botProperties.Handle, 1, 0, 0, Control.FromHandle(botProperties.TabPageHandle).Width,
+                             Control.FromHandle(botProperties.TabPageHandle).Height, 0)
+            Bots.Items.Add(botProperties.ProcessId, Me)
+            _timer.Start()
+        End Sub
+
+        Public Sub Kill()
+            _timer.Stop()
+            CmdLine.Kill(BotProperties)
+            BotProperties.IsRunning = False
+            If Bots.Items.ContainsKey(BotProperties.ProcessId) Then Bots.Items.Remove(BotProperties.ProcessId)
+
+            Dim directory As String = Path.GetDirectoryName(BotProperties.TempExecutablePath)
+
+            While Not IO.DirectoryIsEmpty(directory)
+                IO.DeleteFilesFromFolder(directory)
+            End While
+        End Sub
+        Private Sub HandleTimer(sender As Object, e As EventArgs)
+            If Not CmdLine.IsRunning(BotProperties) Then
+                Start()
+            End If
         End Sub
     End Class
 End NameSpace

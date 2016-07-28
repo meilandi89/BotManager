@@ -1,5 +1,4 @@
 ﻿Imports BotManager.Manager
-Imports BotManager.Manager.Helper
 Imports BotManager.Manager.Properties
 Imports BotManager.Manager.Type
 Imports BotManager.Windows
@@ -7,33 +6,23 @@ Imports BotManager.Windows
 Namespace UserInterface
     Public Class Main
         Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
-            Dim runInformation As New Bot()
-            runInformation.ExecutablePath = TextBox1.Text
-            My.Settings.Bots.Items.Add(runInformation)
+            Dim botProperties As New Manager.Properties.Bot()
+            botProperties.ExecutablePath = TextBox1.Text
+            botProperties.BotClass = "BotManager.Manager.Type.Haxton"
+            My.Settings.BotsProperties.Items.Add(botProperties)
 
-            StartBot(runInformation, True)
+            Dim genericBot As Manager.Type.Generic = Manager.BotFactory.GetBot(botProperties)
+            Edit(botProperties)
+
+            InitializeBot(botProperties, genericBot)
         End Sub
 
-        Private Sub StartBot(ByRef bot As Bot, Optional isNew As Boolean = False)
-            If File.Exists(bot.ExecutablePath) Then
-                bot.TempExecutablePath = IO.CopyFolder(Path.GetDirectoryName(bot.ExecutablePath)) & "\" & Path.GetFileName(bot.ExecutablePath)
-            Else 
-                MsgBox("Path doesn't Exists")
-                My.Settings.Bots.Items.Remove(bot)
-                Exit Sub
-            End If
+        Private Sub InitializeBot(ByRef botProperties As Bot, ByRef genericBot As Manager.Type.Generic)
 
-            If isNew Then 
-                Generic.SetSettings(bot)
-                Edit(bot)
-            End If
+            Dim newTabPage As TabPage = CreateTabPage(botProperties)
+            botProperties.TabPageHandle = newTabPage.Handle
 
-            Dim newTabPage As TabPage = CreateTabPage(bot)
-            Generic.RunBot(bot)
-            bot.TabPageHandle = newTabPage.Handle
-
-            Api.SetParent(bot.Handle, bot.TabPageHandle)
-            Api.SetWindowPos(bot.Handle, 1, 0, 0, newTabPage.Width, newTabPage.Height, 0)
+            genericBot.Start()
         End Sub
 
         Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
@@ -42,7 +31,7 @@ Namespace UserInterface
             Dim runInformation = DirectCast(selectedTab.Tag, Bot)
 
             KillBot(runInformation)
-            My.Settings.Bots.Items.Remove(runInformation)
+            My.Settings.BotsProperties.Items.Remove(runInformation)
 
             selectedTab.Dispose()
             TabControl1.TabPages.Remove(selectedTab)
@@ -66,11 +55,11 @@ Namespace UserInterface
         End Sub
 
         Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-            If My.Settings.Bots Is Nothing Then
-                My.Settings.Bots = New Bots
+            If My.Settings.BotsProperties Is Nothing Then
+                My.Settings.BotsProperties = New BotsProperties
             Else
-                For Each runInformation As Bot In My.Settings.Bots.Items
-                    StartBot(runInformation)
+                For Each botProperties As Bot In My.Settings.BotsProperties.Items
+                    InitializeBot(botProperties, Manager.BotFactory.GetBot(botProperties))
                 Next
             End If
 
@@ -78,32 +67,28 @@ Namespace UserInterface
         End Sub
 
         Private Sub Form1_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
-
             KillAllBots()
             My.Settings.Save()
         End Sub
-
         Private Sub KillAllBots()
-            For Each runInformation As Bot In My.Settings.Bots.Items
+            For Each runInformation As Bot In My.Settings.BotsProperties.Items
                 KillBot(runInformation)
             Next
         End Sub
-        Private Sub KillBot(bot As Bot)
-            If Not bot.IsRunning Then Exit Sub
-            Generic.StopBot(bot)
-            Threading.Thread.Sleep(300)
-            IO.DeleteFilesFromFolder(Path.GetDirectoryName(bot.TempExecutablePath))
+        Private Sub KillBot(ByRef botProperties As Bot)
+            If Not botProperties.IsRunning Then Exit Sub
+            Manager.Bots.Items(botProperties.ProcessId).Kill()
         End Sub
 
 
         Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
             If TabControl1.TabPages.Count = 0 Then Exit Sub
-
             Dim selectedTab As TabPage = TabControl1.SelectedTab
-            Dim runInformation = DirectCast(selectedTab.Tag, Bot)
-            KillBot(runInformation)
-            Edit(runInformation, selectedTab)
-            StartBot(runInformation)
+            Dim botProperties = DirectCast(selectedTab.Tag, Bot)
+
+            KillBot(botProperties)
+            Edit(botProperties, selectedTab)
+            InitializeBot(botProperties, Manager.BotFactory.GetBot(botProperties))
         End Sub
 
         Private Sub Edit(bot As Bot, optional tabPage As TabPage = Nothing)

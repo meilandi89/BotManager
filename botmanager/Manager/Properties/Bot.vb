@@ -6,6 +6,8 @@
         Public SettingValues As New List(Of String)
         Public IsRunning As Boolean = False
         Public IsHaxton As Boolean = False
+        Public BotClass As String
+
         <NonSerialized()> Public ProcessId As Integer = 0
         <NonSerialized()> Public Handle As Integer = 0
         <NonSerialized()> Public TabPageHandle As Integer = 0
