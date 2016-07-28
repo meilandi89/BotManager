@@ -1,4 +1,4 @@
-﻿Imports System.Threading
+﻿Imports System.Timers
 Imports BotManager.Manager.Helpers
 Imports BotManager.Manager.Properties
 Imports BotManager.Windows
@@ -7,7 +7,7 @@ Namespace Manager.Type
     Public MustInherit Class Generic
         Protected BotProperties As Bot
         Protected ExecutablePath As String = ""
-        Private ReadOnly _timer As New Timers.Timer(1000)
+        Private ReadOnly _timer As New Timer(1000)
         Public MustOverride Sub WriteSettings()
         Public MustOverride Sub ReadSettings()
 
@@ -28,9 +28,9 @@ Namespace Manager.Type
                 Exit Sub
             End If
         End Sub
-
         Public Sub Start()
             WriteSettings()
+
             Dim pInfo As New ProcessStartInfo
             pInfo.WorkingDirectory = Path.GetDirectoryName(botProperties.TempExecutablePath)
             pInfo.FileName = Path.GetFileName(botProperties.TempExecutablePath)
@@ -57,13 +57,14 @@ Namespace Manager.Type
             BotProperties.IsRunning = False
 
             If delete Then
-                 Dim directory As String = Path.GetDirectoryName(BotProperties.TempExecutablePath)
+                Dim directory As String = Path.GetDirectoryName(BotProperties.TempExecutablePath)
 
                 While Not IO.DirectoryIsEmpty(directory)
-                   IO.DeleteFilesFromFolder(directory)
+                    IO.DeleteFilesFromFolder(directory)
                 End While
             End If
         End Sub
+
         Private Sub HandleTimer(sender As Object, e As EventArgs)
             If Not CmdLine.IsRunning(BotProperties) Then
                 Start()

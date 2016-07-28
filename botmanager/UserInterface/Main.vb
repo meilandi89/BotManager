@@ -29,10 +29,8 @@ Namespace UserInterface
             End If
         End Sub
         Private Sub InitializeBot(ByRef botProperties As Bot, ByRef genericBot As Generic)
-
             Dim newTabPage As TabPage = CreateTabPage(botProperties)
             botProperties.TabPageHandle = newTabPage.Handle
-
             genericBot.Start()
         End Sub
 
@@ -75,8 +73,6 @@ Namespace UserInterface
                 End If
             End If
        End Sub
-
-
         Private Sub Form1_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
             KillAllBots()
             My.Settings.Save()

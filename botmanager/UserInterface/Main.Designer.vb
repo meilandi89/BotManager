@@ -106,6 +106,7 @@
         '
         'LinkLabel1
         '
+        Me.LinkLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.LinkLabel1.AutoSize = true
         Me.LinkLabel1.Location = New System.Drawing.Point(597, 13)
         Me.LinkLabel1.Name = "LinkLabel1"
