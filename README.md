@@ -39,9 +39,9 @@ How-To:
 
 Google Accounts: 
 
-To use google accounts go here: https://www.google.com/settings/security/lesssecureapps
+1. To use google accounts go here: https://www.google.com/settings/security/lesssecureapps
 
-Check Turn On
+2. Check Turn On
 
 Future Features: 
 
