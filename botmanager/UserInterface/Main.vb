@@ -1,4 +1,5 @@
 ﻿Imports BotManager.Manager
+Imports BotManager.Manager.Helpers
 Imports BotManager.Manager.Properties
 Imports BotManager.Manager.Type
 Imports BotManager.Windows
@@ -6,18 +7,28 @@ Imports BotManager.Windows
 Namespace UserInterface
     Public Class Main
         Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
-            Dim botProperties As New Manager.Properties.Bot()
-            botProperties.ExecutablePath = TextBox1.Text
-            botProperties.BotClass = "BotManager.Manager.Type.Haxton"
-            My.Settings.BotsProperties.Items.Add(botProperties)
+            Dim botProperties As New Bot()
+            If ComboBox1.Text = "Haxton" Then
+                botProperties.BotClass = "BotManager.Manager.Type.Haxton"
+            ElseIf ComboBox1.Text = "Spegeli" Then
+                botProperties.BotClass = "BotManager.Manager.Type.Spegeli"
+            Else 
+                botProperties = Nothing
+                MsgBox("Select bot type")
+                Exit Sub
+            End If
 
-            Dim genericBot As Manager.Type.Generic = Manager.BotFactory.GetBot(botProperties)
+            My.Settings.BotsProperties.Items.Add(botProperties)
+            Dim genericBot As Generic = BotFactory.GetBot(botProperties)
             Edit(botProperties)
 
             InitializeBot(botProperties, genericBot)
         End Sub
 
-        Private Sub InitializeBot(ByRef botProperties As Bot, ByRef genericBot As Manager.Type.Generic)
+        Private Function GetBotTypeName(botname As String) As String()
+        End Function
+
+        Private Sub InitializeBot(ByRef botProperties As Bot, ByRef genericBot As Generic)
 
             Dim newTabPage As TabPage = CreateTabPage(botProperties)
             botProperties.TabPageHandle = newTabPage.Handle
@@ -59,27 +70,62 @@ Namespace UserInterface
                 My.Settings.BotsProperties = New BotsProperties
             Else
                 For Each botProperties As Bot In My.Settings.BotsProperties.Items
-                    InitializeBot(botProperties, Manager.BotFactory.GetBot(botProperties))
+                    InitializeBot(botProperties, BotFactory.GetBot(botProperties))
                 Next
             End If
 
-            TextBox1.Text = my.Settings.Textbox
+            Http.DownloadRepository("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "nuget.exe")
+            InstallSpegeli()
+            InstallHaxton()
+        End Sub
+
+        Private Sub InstallSpegeli()
+            IO.DeleteFilesFromFolder("Spegeli")
+            Http.DownloadRepository("https://github.com/Spegeli/Pokemon-Go-Rocket-API/archive/master.zip", "Spegeli.zip")
+            IO.Unzip("Spegeli")
+
+            Dim pInfo As New ProcessStartInfo
+            Dim pInfo1 As New ProcessStartInfo
+            pInfo1.WorkingDirectory = "Spegeli/Pokemon-Go-Rocket-API-master"
+            pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
+
+            pInfo.FileName = "nuget.exe"
+            pInfo.Arguments = "restore " & "Spegeli/Pokemon-Go-Rocket-API-master"
+            CmdLine.Run(pInfo, True)
+            CmdLine.Run(pInfo1, True)
+        End Sub
+
+        Private Sub InstallHaxton()
+            IO.DeleteFilesFromFolder("Haxton")
+            Http.DownloadRepository("https://github.com/d-haxton/HaxtonBot/archive/master.zip", "Haxton.zip")
+            IO.Unzip("Haxton")
+            Dim pInfo As New ProcessStartInfo
+            Dim pInfo1 As New ProcessStartInfo
+            pInfo1.WorkingDirectory = "Haxton/HaxtonBot-master"
+            pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
+
+            pInfo.FileName = "nuget.exe"
+            pInfo.Arguments = "restore " & "Haxton/HaxtonBot-master"
+
+            CmdLine.Run(pInfo, True)
+            CmdLine.Run(pInfo1, True)
         End Sub
 
         Private Sub Form1_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
             KillAllBots()
             My.Settings.Save()
         End Sub
+
         Private Sub KillAllBots()
             For Each runInformation As Bot In My.Settings.BotsProperties.Items
                 KillBot(runInformation)
             Next
         End Sub
+
         Private Sub KillBot(ByRef botProperties As Bot)
             If Not botProperties.IsRunning Then Exit Sub
-            Manager.Bots.Items(botProperties.ProcessId).Kill()
+            Bots.Items(botProperties.ProcessId).Kill()
         End Sub
-
 
         Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
             If TabControl1.TabPages.Count = 0 Then Exit Sub
@@ -88,7 +134,7 @@ Namespace UserInterface
 
             KillBot(botProperties)
             Edit(botProperties, selectedTab)
-            InitializeBot(botProperties, Manager.BotFactory.GetBot(botProperties))
+            InitializeBot(botProperties, BotFactory.GetBot(botProperties))
         End Sub
 
         Private Sub Edit(bot As Bot, optional tabPage As TabPage = Nothing)
@@ -98,18 +144,6 @@ Namespace UserInterface
                     tabPage.Dispose()
                     TabControl1.TabPages.Remove(tabPage)
                 End If
-            End If
-        End Sub
-
-        Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-            My.Settings.Textbox = TextBox1.Text
-        End Sub
-
-        Private Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
-            OpenFileDialog.Filter = "executable|*.exe"
-            If OpenFileDialog.ShowDialog() = DialogResult.OK
-                TextBox1.Text = OpenFileDialog.FileName
-                OpenFileDialog.InitialDirectory = path.GetDirectoryName(OpenFileDialog.FileName)
             End If
         End Sub
     End Class

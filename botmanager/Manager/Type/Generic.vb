@@ -6,22 +6,22 @@ Imports BotManager.Windows
 Namespace Manager.Type
     Public MustInherit Class Generic
         Protected BotProperties As Bot
+        Protected ExecutablePath As String = ""
         Private ReadOnly _timer As New Timers.Timer(1000)
         Public MustOverride Sub WriteSettings()
         Public MustOverride Sub ReadSettings()
 
         Public Sub New(ByRef botProperties As Bot)
             Me.BotProperties = botProperties
-            Initialize()
             _timer.Stop()
             AddHandler _timer.Elapsed, AddressOf HandleTimer
         End Sub
 
-        Private Sub Initialize()
-            If File.Exists(BotProperties.ExecutablePath) Then
+        Protected Sub Initialize()
+            If File.Exists(ExecutablePath) Then
                 BotProperties.TempExecutablePath = IO.CopyFolder(
-                    Path.GetDirectoryName(BotProperties.ExecutablePath)) & "\" &
-                                                   Path.GetFileName(BotProperties.ExecutablePath)
+                    Path.GetDirectoryName(ExecutablePath)) & "\" &
+                                                   Path.GetFileName(ExecutablePath)
             Else
                 MsgBox("Path doesn't Exists")
                 My.Settings.BotsProperties.Items.Remove(BotProperties)
@@ -31,7 +31,11 @@ Namespace Manager.Type
 
         Public Sub Start()
             WriteSettings()
-            Dim p As Process = CmdLine.Run(BotProperties)
+            Dim pInfo As New ProcessStartInfo
+            pInfo.WorkingDirectory = Path.GetDirectoryName(botProperties.TempExecutablePath)
+            pInfo.FileName = Path.GetFileName(botProperties.TempExecutablePath)
+
+            Dim p As Process = CmdLine.Run(pInfo, False)
             If Bots.Items.ContainsKey(BotProperties.ProcessId) Then Bots.Items.Remove(BotProperties.ProcessId)
 
             BotProperties.ProcessId = p.Id

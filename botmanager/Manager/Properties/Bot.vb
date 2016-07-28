@@ -1,11 +1,10 @@
 ﻿Namespace Manager.Properties
     <Serializable()>Public Class Bot
-        Public ExecutablePath As String = ""
         Public TempExecutablePath As String = ""
+        Public ProjectPath As String = ""
         Public SettingKeys As New List(Of String)
         Public SettingValues As New List(Of String)
         Public IsRunning As Boolean = False
-        Public IsHaxton As Boolean = False
         Public BotClass As String
 
         <NonSerialized()> Public ProcessId As Integer = 0

@@ -1,4 +1,4 @@
-﻿
+﻿Imports System.IO.Compression
 
 Namespace Manager.Helpers
     Public Class IO
@@ -54,5 +54,9 @@ Namespace Manager.Helpers
                 Return False
             End Try
         End Function
+
+        Public Shared Sub Unzip(fileName As String)
+            ZipFile.ExtractToDirectory(fileName & ".zip", fileName)
+        End Sub
     End Class
 End NameSpace
