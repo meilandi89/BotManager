@@ -20,8 +20,12 @@
         End Function
 
         Public Sub AddKeyValue(key As String, value As String)
-            SettingKeys.Add(key)
-            SettingValues.Add(value)
+            If SettingKeys.Contains(key) Then
+                SettingValues.Item(SettingKeys.IndexOf(key)) = Value
+            Else 
+                SettingKeys.Add(key)
+                SettingValues.Add(value)
+            End If
         End Sub
     End Class
 End NameSpace

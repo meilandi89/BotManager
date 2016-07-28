@@ -43,23 +43,25 @@ Namespace Manager.Type
             BotProperties.IsRunning = True
 
             Api.SetParent(botProperties.Handle, botProperties.TabPageHandle)
-            Api.SetWindowPos(botProperties.Handle, 1, 0, 0, Control.FromHandle(botProperties.TabPageHandle).Width,
-                             Control.FromHandle(botProperties.TabPageHandle).Height, 0)
+            Dim tabPAge As TabPage = Control.FromHandle(botProperties.TabPageHandle)
+            Api.SetWindowPos(botProperties.Handle, 1, 0, 0, tabPAge.Width,
+                             tabPAge.Height, 0)
             Bots.Items.Add(botProperties.ProcessId, Me)
             _timer.Start()
         End Sub
 
-        Public Sub Kill()
+        Public Sub Kill(Optional delete As Boolean = True)
             _timer.Stop()
             CmdLine.Kill(BotProperties)
             BotProperties.IsRunning = False
-            If Bots.Items.ContainsKey(BotProperties.ProcessId) Then Bots.Items.Remove(BotProperties.ProcessId)
 
-            Dim directory As String = Path.GetDirectoryName(BotProperties.TempExecutablePath)
+            If delete Then
+                 Dim directory As String = Path.GetDirectoryName(BotProperties.TempExecutablePath)
 
-            While Not IO.DirectoryIsEmpty(directory)
-                IO.DeleteFilesFromFolder(directory)
-            End While
+                While Not IO.DirectoryIsEmpty(directory)
+                   IO.DeleteFilesFromFolder(directory)
+                End While
+            End If
         End Sub
         Private Sub HandleTimer(sender As Object, e As EventArgs)
             If Not CmdLine.IsRunning(BotProperties) Then

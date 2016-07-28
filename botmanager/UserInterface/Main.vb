@@ -88,6 +88,8 @@ Namespace UserInterface
             Dim pInfo1 As New ProcessStartInfo
             pInfo1.WorkingDirectory = "Spegeli/Pokemon-Go-Rocket-API-master"
             pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
+            pinfo1.WindowStyle = ProcessWindowStyle.Hidden
+            pinfo.WindowStyle = ProcessWindowStyle.Hidden
 
             pInfo.FileName = "nuget.exe"
             pInfo.Arguments = "restore " & "Spegeli/Pokemon-Go-Rocket-API-master"
@@ -103,7 +105,8 @@ Namespace UserInterface
             Dim pInfo1 As New ProcessStartInfo
             pInfo1.WorkingDirectory = "Haxton/HaxtonBot-master"
             pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
-
+            pinfo1.WindowStyle = ProcessWindowStyle.Hidden
+            pinfo.WindowStyle = ProcessWindowStyle.Hidden
             pInfo.FileName = "nuget.exe"
             pInfo.Arguments = "restore " & "Haxton/HaxtonBot-master"
 
@@ -117,8 +120,8 @@ Namespace UserInterface
         End Sub
 
         Private Sub KillAllBots()
-            For Each runInformation As Bot In My.Settings.BotsProperties.Items
-                KillBot(runInformation)
+            For Each botProperties As Bot In My.Settings.BotsProperties.Items
+                KillBot(botProperties)
             Next
         End Sub
 
@@ -132,19 +135,20 @@ Namespace UserInterface
             Dim selectedTab As TabPage = TabControl1.SelectedTab
             Dim botProperties = DirectCast(selectedTab.Tag, Bot)
 
-            KillBot(botProperties)
-            Edit(botProperties, selectedTab)
-            InitializeBot(botProperties, BotFactory.GetBot(botProperties))
-        End Sub
-
-        Private Sub Edit(bot As Bot, optional tabPage As TabPage = Nothing)
-            Dim dialog As New SettingsEditor(bot.SettingKeys, bot.SettingValues)
-            If dialog.ShowDialog() = DialogResult.OK Then
-                If Not tabPage Is Nothing Then
-                    tabPage.Dispose()
-                    TabControl1.TabPages.Remove(tabPage)
-                End If
+            If Edit(botProperties, selectedTab) Then
+                selectedTab.Text = botProperties.GetSettingValue("PtcUsername")
+                Bots.Items(botProperties.ProcessId).Kill(False)
+                Bots.Items(botProperties.ProcessId).Start()
             End If
         End Sub
+
+        Private Function Edit(bot As Bot, optional tabPage As TabPage = Nothing) As Boolean
+            Dim dialog As New SettingsEditor(bot.SettingKeys, bot.SettingValues)
+            If dialog.ShowDialog() = DialogResult.OK Then
+                Return True
+            End If
+            Return False
+        End Function
+
     End Class
 End NameSpace

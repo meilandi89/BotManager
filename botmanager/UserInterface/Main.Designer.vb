@@ -74,6 +74,7 @@
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = true
         Me.Label1.Location = New System.Drawing.Point(346, 333)
         Me.Label1.Name = "Label1"
@@ -83,6 +84,7 @@
         '
         'ComboBox1
         '
+        Me.ComboBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ComboBox1.FormattingEnabled = true
         Me.ComboBox1.Items.AddRange(New Object() {"Haxton", "Spegeli"})
         Me.ComboBox1.Location = New System.Drawing.Point(411, 329)
