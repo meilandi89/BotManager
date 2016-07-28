@@ -38,6 +38,7 @@ Namespace Manager.Type
             Dim p As Process = CmdLine.Run(pInfo, False)
             If Bots.Items.ContainsKey(BotProperties.ProcessId) Then Bots.Items.Remove(BotProperties.ProcessId)
 
+
             BotProperties.ProcessId = p.Id
             BotProperties.Handle = p.MainWindowHandle
             BotProperties.IsRunning = True

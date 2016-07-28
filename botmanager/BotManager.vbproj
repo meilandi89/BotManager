@@ -91,6 +91,12 @@
     <Compile Include="Manager\Type\Neer.vb" />
     <Compile Include="Manager\Type\PokeFast.vb" />
     <Compile Include="Manager\Type\Spegeli.vb" />
+    <Compile Include="UserInterface\Downloading.Designer.vb">
+      <DependentUpon>Downloading.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Downloading.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UserInterface\SettingsEditor.Designer.vb">
       <DependentUpon>SettingsEditor.vb</DependentUpon>
     </Compile>
@@ -124,6 +130,9 @@
     <Compile Include="Windows\CmdLine.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UserInterface\Downloading.resx">
+      <DependentUpon>Downloading.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\Main.resx">
       <DependentUpon>Main.vb</DependentUpon>
     </EmbeddedResource>

@@ -8,6 +8,7 @@ Namespace UserInterface
     Public Class Main
         Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
             Dim botProperties As New Bot()
+
             If ComboBox1.Text = "Haxton" Then
                 botProperties.BotClass = "BotManager.Manager.Type.Haxton"
             ElseIf ComboBox1.Text = "Spegeli" Then
@@ -18,16 +19,15 @@ Namespace UserInterface
                 Exit Sub
             End If
 
-            My.Settings.BotsProperties.Items.Add(botProperties)
             Dim genericBot As Generic = BotFactory.GetBot(botProperties)
-            Edit(botProperties)
 
-            InitializeBot(botProperties, genericBot)
+            If Edit(botProperties) Then
+                My.Settings.BotsProperties.Items.Add(botProperties)
+                InitializeBot(botProperties, genericBot)
+            Else 
+                 botProperties = Nothing
+            End If
         End Sub
-
-        Private Function GetBotTypeName(botname As String) As String()
-        End Function
-
         Private Sub InitializeBot(ByRef botProperties As Bot, ByRef genericBot As Generic)
 
             Dim newTabPage As TabPage = CreateTabPage(botProperties)
@@ -56,7 +56,7 @@ Namespace UserInterface
             Return newTabPage
         End Function
 
-        Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
+        Private Sub Form1_Resize(sender As Object, e As EventArgs) Handles MyBase.ResizeEnd
             Dim bot As Bot
 
             For Each tabPage As TabPage In TabControl1.TabPages
@@ -64,55 +64,18 @@ Namespace UserInterface
                 Api.SetWindowPos(bot.Handle, 1, 0, 0, tabPage.Width, tabPage.Height, 0)
             Next
         End Sub
-
-        Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-            If My.Settings.BotsProperties Is Nothing Then
-                My.Settings.BotsProperties = New BotsProperties
-            Else
-                For Each botProperties As Bot In My.Settings.BotsProperties.Items
-                    InitializeBot(botProperties, BotFactory.GetBot(botProperties))
-                Next
+       Private Sub Form1_HasLoad(sender As Object, e As EventArgs) Handles MyBase.Shown
+            If New Downloading().ShowDialog() = DialogResult.OK Then
+                If My.Settings.BotsProperties Is Nothing Then
+                    My.Settings.BotsProperties = New BotsProperties
+                Else
+                    For Each botProperties As Bot In My.Settings.BotsProperties.Items
+                        InitializeBot(botProperties, BotFactory.GetBot(botProperties))
+                    Next
+                End If
             End If
+       End Sub
 
-            Http.DownloadRepository("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "nuget.exe")
-            InstallSpegeli()
-            InstallHaxton()
-        End Sub
-
-        Private Sub InstallSpegeli()
-            IO.DeleteFilesFromFolder("Spegeli")
-            Http.DownloadRepository("https://github.com/Spegeli/Pokemon-Go-Rocket-API/archive/master.zip", "Spegeli.zip")
-            IO.Unzip("Spegeli")
-
-            Dim pInfo As New ProcessStartInfo
-            Dim pInfo1 As New ProcessStartInfo
-            pInfo1.WorkingDirectory = "Spegeli/PokemoGoBot-GottaCatchEmAll-master"
-            pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
-            pinfo1.WindowStyle = ProcessWindowStyle.Hidden
-            pinfo.WindowStyle = ProcessWindowStyle.Hidden
-
-            pInfo.FileName = "nuget.exe"
-            pInfo.Arguments = "restore " & "Spegeli/PokemoGoBot-GottaCatchEmAll-master"
-            CmdLine.Run(pInfo, True)
-            CmdLine.Run(pInfo1, True)
-        End Sub
-
-        Private Sub InstallHaxton()
-            IO.DeleteFilesFromFolder("Haxton")
-            Http.DownloadRepository("https://github.com/d-haxton/HaxtonBot/archive/master.zip", "Haxton.zip")
-            IO.Unzip("Haxton")
-            Dim pInfo As New ProcessStartInfo
-            Dim pInfo1 As New ProcessStartInfo
-            pInfo1.WorkingDirectory = "Haxton/HaxtonBot-master"
-            pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
-            pinfo1.WindowStyle = ProcessWindowStyle.Hidden
-            pinfo.WindowStyle = ProcessWindowStyle.Hidden
-            pInfo.FileName = "nuget.exe"
-            pInfo.Arguments = "restore " & "Haxton/HaxtonBot-master"
-
-            CmdLine.Run(pInfo, True)
-            CmdLine.Run(pInfo1, True)
-        End Sub
 
         Private Sub Form1_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
             KillAllBots()
