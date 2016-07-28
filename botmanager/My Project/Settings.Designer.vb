@@ -55,17 +55,6 @@ Namespace My
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
-        Public Property BotsProperties() As Global.BotManager.Manager.BotsProperties
-            Get
-                Return CType(Me("BotsProperties"),Global.BotManager.Manager.BotsProperties)
-            End Get
-            Set
-                Me("BotsProperties") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property Textbox() As String
@@ -74,6 +63,17 @@ Namespace My
             End Get
             Set
                 Me("Textbox") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+        Public Property ListOfPropertiesBot() As Global.BotManager.Manager.ListOfPropertiesBot
+            Get
+                Return CType(Me("ListOfPropertiesBot"),Global.BotManager.Manager.ListOfPropertiesBot)
+            End Get
+            Set
+                Me("ListOfPropertiesBot") = value
             End Set
         End Property
     End Class

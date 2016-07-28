@@ -1,7 +1,7 @@
 ﻿Imports BotManager.Manager.Properties
 
 Namespace Manager
-    <Serializable()>Public Class BotsProperties
+    <Serializable()>Public Class ListOfPropertiesBot
         Public Items As New List(Of Bot)
         Public Sub New()
         End Sub

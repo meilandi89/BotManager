@@ -17,17 +17,18 @@ Namespace Manager.Type
             AddHandler _timer.Elapsed, AddressOf HandleTimer
         End Sub
 
-        Protected Sub Initialize()
+        Protected Function Initialize() As Boolean
             If File.Exists(ExecutablePath) Then
                 BotProperties.TempExecutablePath = IO.CopyFolder(
                     Path.GetDirectoryName(ExecutablePath)) & "\" &
                                                    Path.GetFileName(ExecutablePath)
+                Return True
             Else
                 MsgBox("Path doesn't Exists")
-                My.Settings.BotsProperties.Items.Remove(BotProperties)
-                Exit Sub
+                My.Settings.ListOfPropertiesBot.Items.Remove(BotProperties)
+                Return False
             End If
-        End Sub
+        End Function
         Public Sub Start()
             WriteSettings()
 
@@ -36,7 +37,7 @@ Namespace Manager.Type
             pInfo.FileName = Path.GetFileName(botProperties.TempExecutablePath)
 
             Dim p As Process = CmdLine.Run(pInfo, False)
-            If Bots.Items.ContainsKey(BotProperties.ProcessId) Then Bots.Items.Remove(BotProperties.ProcessId)
+            If ListOfGenericBots.Items.ContainsKey(BotProperties.ProcessId) Then ListOfGenericBots.Items.Remove(BotProperties.ProcessId)
 
 
             BotProperties.ProcessId = p.Id
@@ -47,7 +48,7 @@ Namespace Manager.Type
             Dim tabPAge As TabPage = Control.FromHandle(botProperties.TabPageHandle)
             Api.SetWindowPos(botProperties.Handle, 1, 0, 0, tabPAge.Width,
                              tabPAge.Height, 0)
-            Bots.Items.Add(botProperties.ProcessId, Me)
+            ListOfGenericBots.Items.Add(botProperties.ProcessId, Me)
             _timer.Start()
         End Sub
 

@@ -79,8 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager\BotFactory.vb" />
-    <Compile Include="Manager\Bots.vb" />
-    <Compile Include="Manager\BotsProperties.vb" />
+    <Compile Include="Manager\ListOfGenericBots.vb" />
+    <Compile Include="Manager\ListOfPropertiesBot.vb" />
     <Compile Include="Manager\Helpers\Http.vb" />
     <Compile Include="Manager\Helpers\IO.vb" />
     <Compile Include="Manager\Helpers\Json.vb" />

@@ -22,7 +22,7 @@ Namespace UserInterface
             Dim genericBot As Generic = BotFactory.GetBot(botProperties)
 
             If Edit(botProperties) Then
-                My.Settings.BotsProperties.Items.Add(botProperties)
+                My.Settings.ListOfPropertiesBot.Items.Add(botProperties)
                 InitializeBot(botProperties, genericBot)
             Else 
                  botProperties = Nothing
@@ -40,7 +40,7 @@ Namespace UserInterface
             Dim runInformation = DirectCast(selectedTab.Tag, Bot)
 
             KillBot(runInformation)
-            My.Settings.BotsProperties.Items.Remove(runInformation)
+            My.Settings.ListOfPropertiesBot.Items.Remove(runInformation)
 
             selectedTab.Dispose()
             TabControl1.TabPages.Remove(selectedTab)
@@ -64,10 +64,10 @@ Namespace UserInterface
         End Sub
        Private Sub Form1_HasLoad(sender As Object, e As EventArgs) Handles MyBase.Shown
             If New Downloading().ShowDialog() = DialogResult.OK Then
-                If My.Settings.BotsProperties Is Nothing Then
-                    My.Settings.BotsProperties = New BotsProperties
+                If My.Settings.ListOfPropertiesBot Is Nothing Then
+                    My.Settings.ListOfPropertiesBot = New ListOfPropertiesBot
                 Else
-                    For Each botProperties As Bot In My.Settings.BotsProperties.Items
+                    For Each botProperties As Bot In My.Settings.ListOfPropertiesBot.Items
                         InitializeBot(botProperties, BotFactory.GetBot(botProperties))
                     Next
                 End If
@@ -79,14 +79,14 @@ Namespace UserInterface
         End Sub
 
         Private Sub KillAllBots()
-            For Each botProperties As Bot In My.Settings.BotsProperties.Items
+            For Each botProperties As Bot In My.Settings.ListOfPropertiesBot.Items
                 KillBot(botProperties)
             Next
         End Sub
 
         Private Sub KillBot(ByRef botProperties As Bot)
             If Not botProperties.IsRunning Then Exit Sub
-            Bots.Items(botProperties.ProcessId).Kill()
+            ListOfGenericBots.Items(botProperties.ProcessId).Kill()
         End Sub
 
         Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
@@ -96,8 +96,8 @@ Namespace UserInterface
 
             If Edit(botProperties, selectedTab) Then
                 selectedTab.Text = botProperties.GetSettingValue("PtcUsername")
-                Bots.Items(botProperties.ProcessId).Kill(False)
-                Bots.Items(botProperties.ProcessId).Start()
+                ListOfGenericBots.Items(botProperties.ProcessId).Kill(False)
+                ListOfGenericBots.Items(botProperties.ProcessId).Start()
             End If
         End Sub
 
@@ -114,8 +114,8 @@ Namespace UserInterface
             Dim botProperties = DirectCast(selectedTab.Tag, Bot)
 
             selectedTab.Text = botProperties.GetSettingValue("PtcUsername")
-            Bots.Items(botProperties.ProcessId).Kill(False)
-            Bots.Items(botProperties.ProcessId).Start()
+            ListOfGenericBots.Items(botProperties.ProcessId).Kill(False)
+            ListOfGenericBots.Items(botProperties.ProcessId).Start()
         End Sub
 
         Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked

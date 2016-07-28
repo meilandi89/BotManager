@@ -7,7 +7,9 @@ Public Class Downloading
     End Sub
         Private Sub InstallNuget()
             BackgroundWorker1.ReportProgress(10,  "Downloading Nuget.exe")
-            Http.DownloadRepository("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "nuget.exe")
+            If Not File.Exists("nuget.exe") Then
+                Http.DownloadRepository("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "nuget.exe")
+            End If
         End Sub
 
          Private Sub InstallSpegeli()
