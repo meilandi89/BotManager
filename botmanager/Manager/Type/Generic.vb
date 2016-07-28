@@ -56,7 +56,7 @@ Namespace Manager.Type
             _timer.Stop()
             CmdLine.Kill(BotProperties)
             BotProperties.IsRunning = False
-            If ListOfGenericBots.Items.ContainsKey(BotProperties.ProcessId) Then ListOfGenericBots.Items.Remove(BotProperties.ProcessId)
+            'If ListOfGenericBots.Items.ContainsKey(BotProperties.ProcessId) Then ListOfGenericBots.Items.Remove(BotProperties.ProcessId)
 
             If delete Then
                 Dim directory As String = Path.GetDirectoryName(BotProperties.TempExecutablePath)
