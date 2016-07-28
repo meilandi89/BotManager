@@ -86,13 +86,13 @@ Namespace UserInterface
 
             Dim pInfo As New ProcessStartInfo
             Dim pInfo1 As New ProcessStartInfo
-            pInfo1.WorkingDirectory = "Spegeli/Pokemon-Go-Rocket-API-master"
+            pInfo1.WorkingDirectory = "Spegeli/PokemoGoBot-GottaCatchEmAll-master"
             pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
             pinfo1.WindowStyle = ProcessWindowStyle.Hidden
             pinfo.WindowStyle = ProcessWindowStyle.Hidden
 
             pInfo.FileName = "nuget.exe"
-            pInfo.Arguments = "restore " & "Spegeli/Pokemon-Go-Rocket-API-master"
+            pInfo.Arguments = "restore " & "Spegeli/PokemoGoBot-GottaCatchEmAll-master"
             CmdLine.Run(pInfo, True)
             CmdLine.Run(pInfo1, True)
         End Sub
