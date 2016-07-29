@@ -122,5 +122,9 @@ Namespace UserInterface
             Me.LinkLabel1.LinkVisited = True
             System.Diagnostics.Process.Start("http://www.ownedcore.com/forums/pokemon-go/pokemon-go-hacks-cheats/566095-bot-manager-auto-update-includes-multiple-bots-multi-account.html")
         End Sub
+
+        Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+            UserInterface.Test.ShowDialog()
+        End Sub
     End Class
 End NameSpace

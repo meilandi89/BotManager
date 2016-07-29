@@ -127,6 +127,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="UserInterface\Test.Designer.vb">
+      <DependentUpon>Test.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Test.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Windows\Api.vb" />
     <Compile Include="Windows\CmdLine.vb" />
   </ItemGroup>
@@ -145,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\SettingsEditor.resx">
       <DependentUpon>SettingsEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\Test.resx">
+      <DependentUpon>Test.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
