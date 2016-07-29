@@ -4,6 +4,7 @@
         Public ProjectPath As String = ""
         Public SettingKeys As New List(Of String)
         Public SettingValues As New List(Of String)
+        Public RestartTimer As Integer
         Public IsRunning As Boolean = False
         Public BotClass As String
 

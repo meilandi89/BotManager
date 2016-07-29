@@ -47,10 +47,9 @@ Namespace Manager.Helpers
             Try
             Return System.IO.Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories).Count() = 0 AndAlso
                    System.IO.Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Count() = 0
+            Catch e As DirectoryNotFoundException
+                Return True
             Catch ex As Exception
-                If ex.Message.Contains("Could not find a part of the path") Then
-                    Return True
-                End If
                 Return False
             End Try
         End Function
