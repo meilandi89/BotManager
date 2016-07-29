@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/botmanager/bin/Debug
+/.vs/botmanager/v14
+/botmanager/obj/Debug
