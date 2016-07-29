@@ -37,7 +37,7 @@ Namespace Manager.Type
             pInfo.FileName = Path.GetFileName(botProperties.TempExecutablePath)
 
             Dim p As Process = CmdLine.Run(pInfo, False)
-            If ListOfGenericBots.Items.ContainsKey(BotProperties.ProcessId) Then ListOfGenericBots.Items.Remove(BotProperties.ProcessId)
+            'If ListOfGenericBots.Items.ContainsKey(BotProperties.ProcessId) Then ListOfGenericBots.Items.Remove(BotProperties.ProcessId)
 
 
             BotProperties.ProcessId = p.Id
