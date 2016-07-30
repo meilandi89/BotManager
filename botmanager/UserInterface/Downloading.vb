@@ -1,5 +1,5 @@
 ﻿Imports System.Configuration
-Imports BotManager.Manager.Helpers
+Imports BotManager.Helpers
 Imports BotManager.Properties
 Imports BotManager.Windows
 
@@ -37,6 +37,7 @@ Namespace UserInterface
             End If
         End Sub
         Private Sub InstallBot(ByRef supportedBotInformation As SupportedBotInformation)
+            BotManager.Helpers.IO.DeleteFilesFromFolder(Helpers.IO.AppData)
             DeleteOldBot(supportedBotInformation)
             DownloadBot(supportedBotInformation)
             UnZipBot(supportedBotInformation)
@@ -124,7 +125,8 @@ Namespace UserInterface
                 btnYes.Visible = True
                 btnNo.Visible = True
             End If
-
+        End Sub
+        Private Sub Downloading_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
             For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
                 AddSettings(supportedBotInformation)
             Next

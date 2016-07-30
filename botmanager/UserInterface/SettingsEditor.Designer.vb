@@ -31,6 +31,7 @@
         Me.Label2 = New System.Windows.Forms.Label()
         Me.chkBatchAdd = New System.Windows.Forms.CheckBox()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.chkHide = New System.Windows.Forms.CheckBox()
         CType(Me.DataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
@@ -41,7 +42,7 @@
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Location = New System.Drawing.Point(16, 39)
-        Me.DataGridView1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DataGridView1.Margin = New System.Windows.Forms.Padding(4)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.Size = New System.Drawing.Size(533, 430)
         Me.DataGridView1.TabIndex = 0
@@ -50,7 +51,7 @@
         '
         Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnSave.Location = New System.Drawing.Point(449, 476)
-        Me.btnSave.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnSave.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 28)
         Me.btnSave.TabIndex = 1
@@ -61,7 +62,7 @@
         '
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnCancel.Location = New System.Drawing.Point(341, 476)
-        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 28)
         Me.btnCancel.TabIndex = 2
@@ -70,8 +71,9 @@
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = true
-        Me.Label1.Location = New System.Drawing.Point(16, 482)
+        Me.Label1.Location = New System.Drawing.Point(17, 485)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(91, 16)
@@ -80,8 +82,9 @@
         '
         'txtRestartTimer
         '
-        Me.txtRestartTimer.Location = New System.Drawing.Point(123, 480)
-        Me.txtRestartTimer.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRestartTimer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.txtRestartTimer.Location = New System.Drawing.Point(114, 479)
+        Me.txtRestartTimer.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRestartTimer.Name = "txtRestartTimer"
         Me.txtRestartTimer.Size = New System.Drawing.Size(68, 22)
         Me.txtRestartTimer.TabIndex = 4
@@ -89,8 +92,9 @@
         '
         'Label2
         '
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = true
-        Me.Label2.Location = New System.Drawing.Point(200, 484)
+        Me.Label2.Location = New System.Drawing.Point(190, 485)
         Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(54, 16)
@@ -112,14 +116,26 @@
         Me.TextBox1.Enabled = false
         Me.TextBox1.Location = New System.Drawing.Point(114, 10)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(140, 22)
+        Me.TextBox1.Size = New System.Drawing.Size(260, 22)
         Me.TextBox1.TabIndex = 7
+        Me.TextBox1.Text = "File Path"
+        '
+        'chkHide
+        '
+        Me.chkHide.AutoSize = true
+        Me.chkHide.Location = New System.Drawing.Point(380, 12)
+        Me.chkHide.Name = "chkHide"
+        Me.chkHide.Size = New System.Drawing.Size(59, 20)
+        Me.chkHide.TabIndex = 8
+        Me.chkHide.Text = "Hide!"
+        Me.chkHide.UseVisualStyleBackColor = true
         '
         'SettingsEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(565, 513)
+        Me.Controls.Add(Me.chkHide)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.chkBatchAdd)
         Me.Controls.Add(Me.Label2)
@@ -129,7 +145,7 @@
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.DataGridView1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "SettingsEditor"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Settings Editor"
@@ -147,5 +163,6 @@ End Sub
         Friend WithEvents Label2 As Label
         Friend WithEvents chkBatchAdd As CheckBox
         Friend WithEvents TextBox1 As TextBox
+        Friend WithEvents chkHide As CheckBox
     End Class
 End NameSpace

@@ -10,5 +10,10 @@ Namespace Windows
         Public Shared Function SetWindowPos(hWnd As IntPtr, hWndInsertAfter As IntPtr, X As Integer, Y As Integer,
                                             cx As Integer, cy As Integer, uFlags As Integer) As Boolean
         End Function
+
+        <DllImport("user32.dll", SetLastError:=True, CharSet:=CharSet.Auto)> _
+        Public Shared Function ShowWindow(ByVal hwnd As IntPtr, ByVal nCmdShow As Integer) As Boolean
+        End Function
+
     End Class
 End NameSpace

@@ -1,6 +1,6 @@
 ﻿Imports System.Net
 
-Namespace Manager.Helpers
+Namespace Helpers
 
     Public Class Http
         Public Shared Sub DownloadRepository(fileUrl As String, fileName As String)

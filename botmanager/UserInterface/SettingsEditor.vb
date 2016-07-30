@@ -13,14 +13,19 @@
 
         End Sub
         Private Sub SettingsEditor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-            Select Case _botProperties.BotClass
-                Case "BotManager.Manager.Type.Haxton"
-                    AddToGridView(List.OfSupportedBots.GetInstance()("Haxton"))
-                Case "BotManager.Manager.Type.Spegeli"
-                    AddToGridView(List.OfSupportedBots.GetInstance()("Spegeli"))
-            End Select
+            If _botProperties.SettingValues.Count > 0 Then
+               AddToGridView(_botProperties)
+            Else 
+                Select Case _botProperties.BotClass
+                    Case "BotManager.Manager.Type.Haxton"
+                        AddToGridView(List.OfSupportedBots.GetInstance()("Haxton"))
+                    Case "BotManager.Manager.Type.Spegeli"
+                        AddToGridView(List.OfSupportedBots.GetInstance()("Spegeli"))
+                End Select
+            End If
+
         End Sub
-        Private Sub AddToGridView(supportedBotInformation As Properties.SupportedBotInformation)
+        Private Sub AddToGridView(supportedBotInformation As Interfaces.ISettings)
             Dim newTable As New DataTable
             newTable.Columns.Add("Name")
             newTable.Columns.Add("Value")
@@ -30,10 +35,12 @@
             Next
         
             txtRestartTimer.Text = _botProperties.RestartTimer
+            chkHide.Checked = _botProperties.Hide
             DataGridView1.DataSource = newTable
         End Sub
         Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
             batchAddProperties = New List(Of Properties.BotInformation)
+
             For row As Integer = 0 To DataGridView1.Rows.Count - 2
                 _botProperties.SettingValues.Item(row) = DataGridView1.Rows(row).Cells(1).Value.ToString()
             Next
@@ -41,15 +48,17 @@
             If Not Integer.TryParse(txtRestartTimer.Text, _botProperties.RestartTimer) Then
                 _botProperties.RestartTimer = 0
             End If
-
+            _botProperties.Hide = chkHide.Checked
             If chkBatchAdd.Checked Then
+                Try
                 Dim reader As New StreamReader(TextBox1.Text)
-                Dim content As String() = reader.ReadToEnd().Split(vbcrlf)
+                Dim content As String() = reader.ReadToEnd().Trim().Split(vbcrlf)
                 Dim newBotProperty As Properties.BotInformation
 
 
                 For Each line As String In content
                     newBotProperty = New Properties.BotInformation()
+                    newBotProperty.Hide = _botProperties.Hide
                     newBotProperty.RestartTimer = _botProperties.RestartTimer
                     newBotProperty.BotClass = _botProperties.BotClass
                     For i As Integer = 0 To _botProperties.SettingKeys.Count - 1
@@ -57,16 +66,20 @@
                     Next
 
                     Dim settings As String() = line.Trim(vbLf).Split(",")
-
+                    If settings.Length = 0 Then Continue For
                     For Each setting As String In settings
                         Dim field As String = setting.Split(":")(0)
                         Dim value As String = setting.Split(":")(1)
-
+                        If field = "" OrElse value = "" Then Continue For
                         newBotProperty.SettingValues(newBotProperty.SettingKeys.IndexOf(field)) = value
                     Next
 
                     batchAddProperties.Add(newBotProperty)
                 Next
+               Catch
+                    Msgbox("Batch file is not compatiable!")
+                    Exit Sub
+               End Try
             Else 
                 batchAddProperties.Add(_botProperties)
             End If

@@ -1,4 +1,4 @@
-﻿Namespace Manager.Helpers
+﻿Namespace Helpers
     Public Class Json
 
     End Class

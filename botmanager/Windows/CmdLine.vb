@@ -6,12 +6,14 @@ Namespace Windows
     Public Class CmdLine
         Public Shared Function Run(ByRef pInfo As ProcessStartInfo, waitForExit As Boolean) As Process
             Dim p As Process = Process.Start(pInfo)
+
             If waitForExit Then
                 While Not p.HasExited
-                    Thread.Sleep(100)
+                    Thread.Sleep(200)
                 End While
             End If
-            Thread.Sleep(200)
+            
+            Thread.Sleep(1000)
 
             Return p
         End Function
@@ -32,15 +34,6 @@ Namespace Windows
                     Kill(botProperties)
                     Return False
                 End If
-                Dim searcher As New ManagementObjectSearcher("SELECT * FROM Win32_Process WHERE Name='WerFault.exe'")
-
-                For Each process As ManagementObject in searcher.Get()
-                    If process("CommandLine").ToString().Contains(botProperties.ProcessId.ToString())
-                        process.InvokeMethod("Terminate", Nothing)
-                        Return False
-                    End If
-                Next
-
                 Return True
             Catch
                 Return False

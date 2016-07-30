@@ -1,6 +1,6 @@
 ﻿Imports System.IO.Compression
 
-Namespace Manager.Helpers
+Namespace Helpers
     Public Class IO
         Public Shared _
             AppData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData & "\" &

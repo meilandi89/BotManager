@@ -23,9 +23,9 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.btnAdd = New System.Windows.Forms.Button()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.btnRemove = New System.Windows.Forms.Button()
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
@@ -35,6 +35,10 @@
         Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.btnStop = New System.Windows.Forms.Button()
+        Me.Timer = New System.Windows.Forms.Timer(Me.components)
+        Me.TreeView1 = New System.Windows.Forms.TreeView()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.BackgroundWorker = New System.ComponentModel.BackgroundWorker()
         Me.SuspendLayout
         '
         'btnAdd
@@ -47,18 +51,6 @@
         Me.btnAdd.TabIndex = 4
         Me.btnAdd.Text = "Add"
         Me.btnAdd.UseVisualStyleBackColor = true
-        '
-        'TabControl1
-        '
-        Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.TabControl1.Location = New System.Drawing.Point(20, 43)
-        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4)
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(831, 354)
-        Me.TabControl1.TabIndex = 5
         '
         'btnRemove
         '
@@ -143,11 +135,43 @@
         Me.btnStop.Text = "Stop"
         Me.btnStop.UseVisualStyleBackColor = true
         '
+        'Timer
+        '
+        Me.Timer.Enabled = true
+        Me.Timer.Interval = 1000
+        '
+        'TreeView1
+        '
+        Me.TreeView1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.TreeView1.Location = New System.Drawing.Point(12, 44)
+        Me.TreeView1.Name = "TreeView1"
+        Me.TreeView1.ShowLines = false
+        Me.TreeView1.ShowPlusMinus = false
+        Me.TreeView1.ShowRootLines = false
+        Me.TreeView1.Size = New System.Drawing.Size(121, 353)
+        Me.TreeView1.TabIndex = 16
+        '
+        'Panel1
+        '
+        Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel1.Location = New System.Drawing.Point(140, 45)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(708, 352)
+        Me.Panel1.TabIndex = 17
+        '
+        'BackgroundWorker
+        '
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(867, 439)
+        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.TreeView1)
         Me.Controls.Add(Me.btnStop)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.LinkLabel1)
@@ -156,7 +180,6 @@
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btnEdit)
         Me.Controls.Add(Me.btnRemove)
-        Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnAdd)
         Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4)
@@ -167,7 +190,6 @@
 
 End Sub
         Friend WithEvents btnAdd As Button
-        Friend WithEvents TabControl1 As TabControl
         Friend WithEvents btnRemove As Button
         Friend WithEvents btnEdit As Button
         Friend WithEvents OpenFileDialog As OpenFileDialog
@@ -177,5 +199,9 @@ End Sub
         Friend WithEvents LinkLabel1 As LinkLabel
         Friend WithEvents Label2 As Label
         Friend WithEvents btnStop As Button
+        Friend WithEvents Timer As Timer
+        Friend WithEvents TreeView1 As TreeView
+        Friend WithEvents Panel1 As Panel
+        Friend WithEvents BackgroundWorker As System.ComponentModel.BackgroundWorker
     End Class
 End NameSpace

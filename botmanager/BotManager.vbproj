@@ -79,6 +79,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Settings.vb" />
     <Compile Include="List\OfSupportedBots.vb" />
     <Compile Include="Manager\BotFactory.vb" />
     <Compile Include="List\OfGenericBots.vb" />
