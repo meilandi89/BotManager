@@ -1,4 +1,5 @@
-﻿Imports BotManager.Manager.Helpers
+﻿Imports System.Configuration
+Imports BotManager.Manager.Helpers
 Imports BotManager.Properties
 Imports BotManager.Windows
 
@@ -14,7 +15,7 @@ Namespace UserInterface
             InstallNuget()
             _compIncrement = 90/(List.OfSupportedBots.GetInstance().Count*5)
 
-            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance()
+            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
                 InstallBot(supportedBotInformation)
             Next
 
@@ -70,7 +71,40 @@ Namespace UserInterface
             msBuildInfo.WindowStyle = ProcessWindowStyle.Hidden
             CmdLine.Run(msBuildInfo, True)
         End Sub
+        Private Sub AddSettings(ByRef supportedBotInformation As SupportedBotInformation)
+            Select Case supportedBotInformation.Name
+                Case "Spegeli"
+                    SpegeliReadSettings(supportedBotInformation)
+                Case "Haxton"
+                    HaxtonReadSettings(supportedBotInformation)
+            End Select
+        End Sub
+         Private Sub HaxtonReadSettings(ByRef supportedBotInformation As SupportedBotInformation)
+            Dim fileMap As New ExeConfigurationFileMap()
+            fileMap.ExeConfigFilename =
+                supportedBotInformation.ExecutablePath & ".config"
+            Dim config As Configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
+                                                                                          ConfigurationUserLevel.None)
+            Dim settingsSection
+            settingsSection = config.AppSettings
 
+            For Each setting In settingsSection.Settings
+                supportedBotInformation.AddKeyValue(setting.[Key], setting.Value.ToString())
+            Next
+        End Sub
+        Private Sub SpegeliReadSettings(ByRef supportedBotInformation As SupportedBotInformation)
+            Dim fileMap As New ExeConfigurationFileMap()
+            fileMap.ExeConfigFilename =
+                supportedBotInformation.ExecutablePath & ".config"
+            Dim config As Configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
+                                                                                          ConfigurationUserLevel.None)
+            Dim settingsSection
+            settingsSection = config.GetSection("userSettings/PokemonGo.RocketAPI.Console.UserSettings")
+
+            For Each setting In settingsSection.Settings
+                supportedBotInformation.AddKeyValue(setting.Name, setting.Value.ValueXml.InnerText)
+            Next
+        End Sub
         Private Sub btnYes_Click(sender As Object, e As EventArgs) Handles btnYes.Click
             btnYes.Visible = False
             btnNo.Visible = False
@@ -90,9 +124,13 @@ Namespace UserInterface
                 btnYes.Visible = True
                 btnNo.Visible = True
             End If
+
+            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
+                AddSettings(supportedBotInformation)
+            Next
         End Sub
         Private Function Installed() As Boolean
-            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance()
+            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
                 If Not Directory.Exists(supportedBotInformation.WorkingDirectory & "\") Then
                     Return False
                 End If

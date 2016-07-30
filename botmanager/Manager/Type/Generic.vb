@@ -10,7 +10,6 @@ Namespace Manager.Type
         Private ReadOnly _timer As New Timer(1000)
         Private _startTime As Date = Nothing
         Public MustOverride Sub WriteSettings()
-        Public MustOverride Sub ReadSettings()
 
         Public Sub New(ByRef botProperties As BotInformation)
             Me.BotProperties = botProperties
@@ -32,8 +31,6 @@ Namespace Manager.Type
         End Function
 
         Public Sub Start()
-
-
             WriteSettings()
 
             Dim pInfo As New ProcessStartInfo

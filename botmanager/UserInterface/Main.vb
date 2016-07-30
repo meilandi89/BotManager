@@ -17,15 +17,18 @@ Namespace UserInterface
                 MsgBox("Select bot type")
                 Exit Sub
             End If
+            Dim dialog As New SettingsEditor(botProperties)
+            Dim genericBot As Generic
 
-            Dim genericBot As Generic = BotFactory.GetBot(botProperties)
-
-            If Edit(botProperties) Then
-                My.Settings.ListOfPropertiesBots.Items.Add(botProperties)
-                InitializeBot(botProperties, genericBot)
-            Else 
-                 botProperties = Nothing
+            If dialog.ShowDialog() = DialogResult.OK Then
+                For Each botInformation As  BotInformation In dialog.BatchAddProperties
+                    genericBot = BotFactory.GetBot(botInformation)
+                    My.Settings.ListOfPropertiesBots.Items.Add(botInformation)
+                    InitializeBot(botInformation, genericBot)
+                Next
             End If
+
+            dialog = Nothing
         End Sub
         Private Sub InitializeBot(ByRef botProperties As BotInformation, ByRef genericBot As Generic)
             Dim newTabPage As TabPage = CreateTabPage(botProperties)
@@ -133,7 +136,7 @@ Namespace UserInterface
             ResizeCmd()
         End Sub
         Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-            For Each supportedBotInformation As Properties.SupportedBotInformation In List.OfSupportedBots.GetInstance()
+            For Each supportedBotInformation As Properties.SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
                 ComboBox1.Items.Add(supportedBotInformation.Name)
             Next
         End Sub
