@@ -33,15 +33,17 @@
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.btnRestart = New System.Windows.Forms.Button()
         Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnStop = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'btnAdd
         '
         Me.btnAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnAdd.Location = New System.Drawing.Point(538, 329)
+        Me.btnAdd.Location = New System.Drawing.Point(799, 404)
+        Me.btnAdd.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(37, 20)
+        Me.btnAdd.Size = New System.Drawing.Size(49, 25)
         Me.btnAdd.TabIndex = 4
         Me.btnAdd.Text = "Add"
         Me.btnAdd.UseVisualStyleBackColor = true
@@ -51,38 +53,41 @@
         Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.TabControl1.Location = New System.Drawing.Point(15, 35)
+        Me.TabControl1.Location = New System.Drawing.Point(20, 43)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(623, 288)
+        Me.TabControl1.Size = New System.Drawing.Size(831, 354)
         Me.TabControl1.TabIndex = 5
         '
         'btnRemove
         '
-        Me.btnRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnRemove.Location = New System.Drawing.Point(581, 329)
+        Me.btnRemove.Location = New System.Drawing.Point(337, 11)
+        Me.btnRemove.Margin = New System.Windows.Forms.Padding(4)
         Me.btnRemove.Name = "btnRemove"
-        Me.btnRemove.Size = New System.Drawing.Size(55, 20)
+        Me.btnRemove.Size = New System.Drawing.Size(73, 25)
         Me.btnRemove.TabIndex = 6
         Me.btnRemove.Text = "Remove"
         Me.btnRemove.UseVisualStyleBackColor = true
         '
         'btnEdit
         '
-        Me.btnEdit.Location = New System.Drawing.Point(15, 9)
+        Me.btnEdit.Location = New System.Drawing.Point(97, 12)
+        Me.btnEdit.Margin = New System.Windows.Forms.Padding(4)
         Me.btnEdit.Name = "btnEdit"
-        Me.btnEdit.Size = New System.Drawing.Size(87, 20)
+        Me.btnEdit.Size = New System.Drawing.Size(73, 25)
         Me.btnEdit.TabIndex = 7
-        Me.btnEdit.Text = "Edit Selected"
+        Me.btnEdit.Text = "Edit"
         Me.btnEdit.UseVisualStyleBackColor = true
         '
         'Label1
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = true
-        Me.Label1.Location = New System.Drawing.Point(346, 333)
+        Me.Label1.Location = New System.Drawing.Point(551, 409)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(59, 13)
+        Me.Label1.Size = New System.Drawing.Size(72, 16)
         Me.Label1.TabIndex = 9
         Me.Label1.Text = "Select Bot:"
         '
@@ -90,47 +95,61 @@
         '
         Me.ComboBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ComboBox1.FormattingEnabled = true
-        Me.ComboBox1.Items.AddRange(New Object() {"Haxton", "Spegeli"})
-        Me.ComboBox1.Location = New System.Drawing.Point(411, 329)
+        Me.ComboBox1.Location = New System.Drawing.Point(631, 406)
+        Me.ComboBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox1.Size = New System.Drawing.Size(160, 24)
         Me.ComboBox1.TabIndex = 10
         '
         'btnRestart
         '
-        Me.btnRestart.Location = New System.Drawing.Point(108, 9)
+        Me.btnRestart.Location = New System.Drawing.Point(256, 12)
+        Me.btnRestart.Margin = New System.Windows.Forms.Padding(4)
         Me.btnRestart.Name = "btnRestart"
-        Me.btnRestart.Size = New System.Drawing.Size(97, 20)
+        Me.btnRestart.Size = New System.Drawing.Size(73, 25)
         Me.btnRestart.TabIndex = 11
-        Me.btnRestart.Text = "Restart Selected"
+        Me.btnRestart.Text = "Restart"
         Me.btnRestart.UseVisualStyleBackColor = true
         '
         'LinkLabel1
         '
         Me.LinkLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.LinkLabel1.AutoSize = true
-        Me.LinkLabel1.Location = New System.Drawing.Point(597, 13)
+        Me.LinkLabel1.Location = New System.Drawing.Point(796, 16)
+        Me.LinkLabel1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LinkLabel1.Name = "LinkLabel1"
-        Me.LinkLabel1.Size = New System.Drawing.Size(39, 13)
+        Me.LinkLabel1.Size = New System.Drawing.Size(48, 16)
         Me.LinkLabel1.TabIndex = 12
         Me.LinkLabel1.TabStop = true
         Me.LinkLabel1.Text = "Rep++"
         '
-        'Button1
+        'Label2
         '
-        Me.Button1.Location = New System.Drawing.Point(319, 9)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 13
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = true
+        Me.Label2.AutoSize = true
+        Me.Label2.Location = New System.Drawing.Point(20, 16)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(65, 16)
+        Me.Label2.TabIndex = 14
+        Me.Label2.Text = "Selected:"
+        '
+        'btnStop
+        '
+        Me.btnStop.Location = New System.Drawing.Point(175, 12)
+        Me.btnStop.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnStop.Name = "btnStop"
+        Me.btnStop.Size = New System.Drawing.Size(73, 25)
+        Me.btnStop.TabIndex = 15
+        Me.btnStop.Text = "Stop"
+        Me.btnStop.UseVisualStyleBackColor = true
         '
         'Main
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(650, 357)
-        Me.Controls.Add(Me.Button1)
+        Me.ClientSize = New System.Drawing.Size(867, 439)
+        Me.Controls.Add(Me.btnStop)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.LinkLabel1)
         Me.Controls.Add(Me.btnRestart)
         Me.Controls.Add(Me.ComboBox1)
@@ -140,6 +159,7 @@
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnAdd)
         Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Main"
         Me.Text = "Pokemon Go Bot Manager"
         Me.ResumeLayout(false)
@@ -155,6 +175,7 @@ End Sub
         Friend WithEvents ComboBox1 As ComboBox
         Friend WithEvents btnRestart As Button
         Friend WithEvents LinkLabel1 As LinkLabel
-        Friend WithEvents Button1 As Button
+        Friend WithEvents Label2 As Label
+        Friend WithEvents btnStop As Button
     End Class
 End NameSpace

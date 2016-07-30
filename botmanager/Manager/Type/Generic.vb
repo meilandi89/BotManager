@@ -1,17 +1,18 @@
 ﻿Imports System.Timers
 Imports BotManager.Manager.Helpers
-Imports BotManager.Manager.Properties
+Imports BotManager.Properties
 Imports BotManager.Windows
 
 Namespace Manager.Type
     Public MustInherit Class Generic
-        Protected BotProperties As Bot
+        Protected BotProperties As BotInformation
         Protected ExecutablePath As String = ""
         Private ReadOnly _timer As New Timer(1000)
+        Private _startTime As Date = Nothing
         Public MustOverride Sub WriteSettings()
         Public MustOverride Sub ReadSettings()
 
-        Public Sub New(ByRef botProperties As Bot)
+        Public Sub New(ByRef botProperties As BotInformation)
             Me.BotProperties = botProperties
             _timer.Stop()
             AddHandler _timer.Elapsed, AddressOf HandleTimer
@@ -25,11 +26,14 @@ Namespace Manager.Type
                 Return True
             Else
                 MsgBox("Path doesn't Exists")
-                My.Settings.ListOfPropertiesBot.Items.Remove(BotProperties)
+                My.Settings.ListOfPropertiesBots.Items.Remove(BotProperties)
                 Return False
             End If
         End Function
+
         Public Sub Start()
+
+
             WriteSettings()
 
             Dim pInfo As New ProcessStartInfo
@@ -48,13 +52,14 @@ Namespace Manager.Type
             Dim tabPAge As TabPage = Control.FromHandle(botProperties.TabPageHandle)
             Api.SetWindowPos(botProperties.Handle, 1, 0, 0, tabPAge.Width,
                              tabPAge.Height, 0)
-            ListOfGenericBots.Items.Add(botProperties.ProcessId, Me)
+            List.OfGenericBots.Items.Add(botProperties.ProcessId, Me)
             _timer.Start()
         End Sub
 
         Public Sub Kill(Optional delete As Boolean = True)
             _timer.Stop()
             CmdLine.Kill(BotProperties)
+            _startTime = Nothing
             BotProperties.IsRunning = False
             'If ListOfGenericBots.Items.ContainsKey(BotProperties.ProcessId) Then ListOfGenericBots.Items.Remove(BotProperties.ProcessId)
 
@@ -70,6 +75,18 @@ Namespace Manager.Type
         Private Sub HandleTimer(sender As Object, e As EventArgs)
             If Not CmdLine.IsRunning(BotProperties) Then
                 Start()
+            End If
+
+            If BotProperties.RestartTimer > 0 Then
+                If _startTime = Nothing Then
+                    _startTime = Now()
+                End If
+
+                If Now() >= _startTime.AddMinutes(BotProperties.RestartTimer)
+                    Kill(False)
+                    Start()
+                    _startTime = Now()
+                End If
             End If
         End Sub
     End Class

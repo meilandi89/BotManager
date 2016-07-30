@@ -1,11 +1,11 @@
 ﻿Imports System.Configuration
-Imports BotManager.Manager.Properties
+Imports BotManager.Properties
 
 Namespace Manager.Type
     Public Class Haxton
         Inherits Generic
         Private Shared ReadOnly SettingValues As New List(Of String)
-        Public Sub New(ByRef botProperties As Bot)
+        Public Sub New(ByRef botProperties As BotInformation)
             MyBase.New(botProperties)
             ExecutablePath = "Haxton/HaxtonBot-master/PokemonGo.Haxton.Console/bin/Debug/PokemonGo.Haxton.Console.exe"
             Initialize()

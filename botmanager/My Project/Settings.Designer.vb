@@ -68,12 +68,12 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
-        Public Property ListOfPropertiesBot() As Global.BotManager.Manager.ListOfPropertiesBot
+        Public Property ListOfPropertiesBots() As Global.BotManager.List.OfPropertiesBots
             Get
-                Return CType(Me("ListOfPropertiesBot"),Global.BotManager.Manager.ListOfPropertiesBot)
+                Return CType(Me("ListOfPropertiesBots"),Global.BotManager.List.OfPropertiesBots)
             End Get
             Set
-                Me("ListOfPropertiesBot") = value
+                Me("ListOfPropertiesBots") = value
             End Set
         End Property
     End Class

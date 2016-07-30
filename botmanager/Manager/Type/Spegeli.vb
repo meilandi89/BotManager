@@ -1,12 +1,12 @@
 ﻿Imports System.Configuration
-Imports BotManager.Manager.Properties
+Imports BotManager.Properties
 
 Namespace Manager.Type
     Public Class Spegeli
         Inherits Generic
         Private Shared ReadOnly SettingValues As New List(Of String)
 
-        Public Sub New(ByRef botProperties As Bot)
+        Public Sub New(ByRef botProperties As BotInformation)
             MyBase.New(botProperties)
             ExecutablePath =  "Spegeli/PokemoGoBot-GottaCatchEmAll-master/PokemonGo.RocketAPI.Console/bin/Debug/PokemonGo.RocketAPI.Console.exe"
             Initialize()

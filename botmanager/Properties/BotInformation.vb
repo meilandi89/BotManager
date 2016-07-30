@@ -1,5 +1,6 @@
-﻿Namespace Manager.Properties
-    <Serializable()>Public Class Bot
+﻿
+Namespace Properties
+    <Serializable()>Public Class BotInformation
         Public TempExecutablePath As String = ""
         Public ProjectPath As String = ""
         Public SettingKeys As New List(Of String)

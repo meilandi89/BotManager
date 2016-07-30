@@ -10,10 +10,5 @@ Namespace Windows
         Public Shared Function SetWindowPos(hWnd As IntPtr, hWndInsertAfter As IntPtr, X As Integer, Y As Integer,
                                             cx As Integer, cy As Integer, uFlags As Integer) As Boolean
         End Function
-
-        <DllImport("user32.dll")>
-        Public Shared Function MoveWindow(hWnd As IntPtr, x As Integer, y As Integer, nWidth As Integer,
-                                          nHeight As Integer, bRepaint As Boolean) As Boolean
-        End Function
     End Class
 End NameSpace

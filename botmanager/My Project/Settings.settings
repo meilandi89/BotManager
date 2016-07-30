@@ -5,7 +5,7 @@
     <Setting Name="Textbox" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ListOfPropertiesBot" Type="BotManager.Manager.ListOfPropertiesBot" Scope="User">
+    <Setting Name="ListOfPropertiesBots" Type="BotManager.List.OfPropertiesBots" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

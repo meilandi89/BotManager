@@ -1,76 +1,103 @@
 ﻿Imports BotManager.Manager.Helpers
+Imports BotManager.Properties
 Imports BotManager.Windows
 
-Public Class Downloading
-    Private Sub Downloading_Load(sender As Object, e As EventArgs) Handles MyBase.Shown
-        BackgroundWorker1.RunWorkerAsync()
-    End Sub
+Namespace UserInterface
+
+    Public Class Downloading
+        Const Nuget As String = "nuget.exe"
+        Const NugetArgument As String = "restore "
+        Const MsBuild As String = "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
+        Private _compIncrement As Integer = 0
+        Private _currentComp As Integer = 0
+        Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
+            InstallNuget()
+            _compIncrement = 90/(List.OfSupportedBots.GetInstance().Count*5)
+
+            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance()
+                InstallBot(supportedBotInformation)
+            Next
+
+            BackgroundWorker1.ReportProgress(0,  "Complete")
+            Threading.Thread.Sleep(500)
+        End Sub
+        Private Sub BackgroundWorker1_ReportProgress(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged
+            _currentComp += e.ProgressPercentage
+            ProgressBar1.Value = _currentComp
+            Label1.Text = e.UserState.ToString()
+        End Sub
+        Private Sub BackgroundWorker1_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BackgroundWorker1.RunWorkerCompleted
+            DialogResult = DialogResult.OK
+        End Sub
         Private Sub InstallNuget()
             BackgroundWorker1.ReportProgress(10,  "Downloading Nuget.exe")
-            If Not File.Exists("nuget.exe") Then
+            If Not File.Exists(Nuget) Then
                 Http.DownloadRepository("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "nuget.exe")
             End If
         End Sub
-
-         Private Sub InstallSpegeli()
-            BackgroundWorker1.ReportProgress(20,  "Deleting Old Spegeli")
-            IO.DeleteFilesFromFolder("Spegeli")
-            BackgroundWorker1.ReportProgress(30,  "Downloading New Spegeli")
-            Http.DownloadRepository("https://github.com/Spegeli/Pokemon-Go-Rocket-API/archive/master.zip", "Spegeli.zip")
-            BackgroundWorker1.ReportProgress(40,  "UnZipping New Spegeli")
-            IO.Unzip("Spegeli")
-
-            BackgroundWorker1.ReportProgress(50,  "Compiling New Spegeli")
-            Dim pInfo As New ProcessStartInfo
-            Dim pInfo1 As New ProcessStartInfo
-            pInfo1.WorkingDirectory = "Spegeli/PokemoGoBot-GottaCatchEmAll-master"
-            pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
-            pinfo1.WindowStyle = ProcessWindowStyle.Hidden
-            pinfo.WindowStyle = ProcessWindowStyle.Hidden
-
-            pInfo.FileName = "nuget.exe"
-            pInfo.Arguments = "restore " & "Spegeli/PokemoGoBot-GottaCatchEmAll-master"
-            CmdLine.Run(pInfo, True)
-            CmdLine.Run(pInfo1, True)
+        Private Sub InstallBot(ByRef supportedBotInformation As SupportedBotInformation)
+            DeleteOldBot(supportedBotInformation)
+            DownloadBot(supportedBotInformation)
+            UnZipBot(supportedBotInformation)
+            DownloadBotPackages(supportedBotInformation)
+            CompileBot(supportedBotInformation)
+        End Sub
+        Private Sub DeleteOldBot(ByRef supportedBotInformation As SupportedBotInformation)
+            BackgroundWorker1.ReportProgress(_compIncrement, "Deleting " & supportedBotInformation.Name & "directory")
+            IO.DeleteFilesFromFolder(supportedBotInformation.Name)
+        End Sub
+        Private Sub DownloadBot(ByRef supportedBotInformation As SupportedBotInformation)
+            BackgroundWorker1.ReportProgress(_compIncrement, "Downloading " & supportedBotInformation.Name)
+            Http.DownloadRepository(supportedBotInformation.DownloadUrl, supportedBotInformation.ZipName)
+        End Sub
+        Private Sub UnZipBot(ByRef supportedBotInformation As SupportedBotInformation)
+            BackgroundWorker1.ReportProgress(_compIncrement, "Unzipping " & supportedBotInformation.Name)
+            IO.Unzip(supportedBotInformation.Name)
+        End Sub
+        Private Sub DownloadBotPackages(ByRef supportedBotInformation As SupportedBotInformation)
+            BackgroundWorker1.ReportProgress(_compIncrement, "Downloading packages for " & supportedBotInformation.Name)
+            Dim nugetInfo As New ProcessStartInfo
+            nugetInfo.FileName = Nuget
+            nugetInfo.Arguments = NugetArgument & supportedBotInformation.WorkingDirectory
+            nugetInfo.WindowStyle = ProcessWindowStyle.Hidden
+            CmdLine.Run(nugetInfo, True)
+        End Sub
+        Private Sub CompileBot(ByRef supportedBotInformation As SupportedBotInformation)
+            BackgroundWorker1.ReportProgress(_compIncrement, "Compiling " & supportedBotInformation.Name)
+            Dim msBuildInfo As New ProcessStartInfo
+            msBuildInfo.WorkingDirectory = supportedBotInformation.WorkingDirectory
+            msBuildInfo.FileName = Chr(34) & MsBuild & Chr(34)
+            msBuildInfo.WindowStyle = ProcessWindowStyle.Hidden
+            CmdLine.Run(msBuildInfo, True)
         End Sub
 
-        Private Sub InstallHaxton()
-            BackgroundWorker1.ReportProgress(60,  "Deleting Old Haxton")
-            IO.DeleteFilesFromFolder("Haxton")
-            BackgroundWorker1.ReportProgress(70,  "Downloading New Haxton")
-            Http.DownloadRepository("https://github.com/d-haxton/HaxtonBot/archive/master.zip", "Haxton.zip")
-            BackgroundWorker1.ReportProgress(80,  "UnZipping New Haxton")
-            IO.Unzip("Haxton")
-
-            BackgroundWorker1.ReportProgress(90,  "Compiling New Haxton")
-            Dim pInfo As New ProcessStartInfo
-            Dim pInfo1 As New ProcessStartInfo
-            pInfo1.WorkingDirectory = "Haxton/HaxtonBot-master"
-            pInfo1.FileName = """C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"""
-            pinfo1.WindowStyle = ProcessWindowStyle.Hidden
-            pinfo.WindowStyle = ProcessWindowStyle.Hidden
-            pInfo.FileName = "nuget.exe"
-            pInfo.Arguments = "restore " & "Haxton/HaxtonBot-master"
-
-            CmdLine.Run(pInfo, True)
-            CmdLine.Run(pInfo1, True)
+        Private Sub btnYes_Click(sender As Object, e As EventArgs) Handles btnYes.Click
+            btnYes.Visible = False
+            btnNo.Visible = False
+            BackgroundWorker1.RunWorkerAsync()
         End Sub
-     Private Sub BackgroundWorker1_ReportProgress(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged
-        ProgressBar1.Value = e.ProgressPercentage
-        Label1.Text = e.UserState.ToString()
-     End Sub
-     Private Sub BackgroundWorker1_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BackgroundWorker1.RunWorkerCompleted
-        DialogResult = DialogResult.OK
-     End Sub
-    Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
-        InstallNuget()
-        InstallSpegeli()
-        InstallHaxton()
-        BackgroundWorker1.ReportProgress(100,  "Complete")
-        Threading.Thread.Sleep(1000)
-    End Sub
-
-    Private Sub Downloading_Load_1(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-End Class
+        Private Sub btnNo_Click(sender As Object, e As EventArgs) Handles btnNo.Click
+            DialogResult = DialogResult.Cancel
+        End Sub
+        Private Sub Downloading_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+            If Not File.Exists(MsBuild) Then
+                MsgBox("Please install all the required software!")
+                End
+            End If
+            If Not Installed Then
+                BackgroundWorker1.RunWorkerAsync()
+            Else 
+                btnYes.Visible = True
+                btnNo.Visible = True
+            End If
+        End Sub
+        Private Function Installed() As Boolean
+            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance()
+                If Not Directory.Exists(supportedBotInformation.WorkingDirectory & "\") Then
+                    Return False
+                End If
+            Next
+            Return True
+        End Function
+    End Class
+End NameSpace

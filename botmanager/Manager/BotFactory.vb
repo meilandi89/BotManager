@@ -2,7 +2,7 @@
 
 Namespace Manager
     Public Class BotFactory
-        Public Shared Function GetBot(ByRef botProperties As Manager.Properties.Bot) As Manager.Type.Generic
+        Public Shared Function GetBot(ByRef botProperties As Properties.BotInformation) As Manager.Type.Generic
             Select Case botProperties.BotClass
                 Case "BotManager.Manager.Type.Haxton"
                     Return New Manager.Type.Haxton(botProperties)

@@ -79,18 +79,17 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="List\OfSupportedBots.vb" />
     <Compile Include="Manager\BotFactory.vb" />
-    <Compile Include="Manager\ListOfGenericBots.vb" />
-    <Compile Include="Manager\ListOfPropertiesBot.vb" />
-    <Compile Include="Manager\Helpers\Http.vb" />
-    <Compile Include="Manager\Helpers\IO.vb" />
-    <Compile Include="Manager\Helpers\Json.vb" />
-    <Compile Include="Manager\Properties\Bot.vb" />
+    <Compile Include="List\OfGenericBots.vb" />
+    <Compile Include="List\OfPropertiesBots.vb" />
+    <Compile Include="Helpers\Http.vb" />
+    <Compile Include="Helpers\IO.vb" />
+    <Compile Include="Helpers\Json.vb" />
+    <Compile Include="Properties\BotInformation.vb" />
+    <Compile Include="Properties\SupportedBotInformation.vb" />
     <Compile Include="Manager\Type\Haxton.vb" />
     <Compile Include="Manager\Type\Maclone.vb" />
-    <Compile Include="Manager\Type\Necro.vb" />
-    <Compile Include="Manager\Type\Neer.vb" />
-    <Compile Include="Manager\Type\PokeFast.vb" />
     <Compile Include="Manager\Type\Spegeli.vb" />
     <Compile Include="UserInterface\Downloading.Designer.vb">
       <DependentUpon>Downloading.vb</DependentUpon>
@@ -127,12 +126,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="UserInterface\Test.Designer.vb">
-      <DependentUpon>Test.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UserInterface\Test.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Windows\Api.vb" />
     <Compile Include="Windows\CmdLine.vb" />
   </ItemGroup>
@@ -151,9 +144,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterface\SettingsEditor.resx">
       <DependentUpon>SettingsEditor.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserInterface\Test.resx">
-      <DependentUpon>Test.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
