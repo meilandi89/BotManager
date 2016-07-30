@@ -67,14 +67,15 @@ Namespace UserInterface
         End Sub
        Private Sub Form1_HasLoad(sender As Object, e As EventArgs) Handles MyBase.Shown
             If New Downloading().ShowDialog() = DialogResult.OK Then
-                If My.Settings.ListOfPropertiesBots Is Nothing Then
+            End If
+
+                            If My.Settings.ListOfPropertiesBots Is Nothing Then
                     My.Settings.ListOfPropertiesBots = New List.OfPropertiesBots
                 Else
                     For Each botProperties As BotInformation In My.Settings.ListOfPropertiesBots.Items
                         InitializeBot(botProperties, BotFactory.GetBot(botProperties))
                     Next
                 End If
-            End If
        End Sub
         Private Sub Form1_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed
             KillAllBots()
