@@ -17,9 +17,9 @@
                AddToGridView(_botProperties)
             Else 
                 Select Case _botProperties.BotClass
-                    Case "BotManager.Manager.Type.Haxton"
+                    Case "BotManager.Manager.Haxton"
                         AddToGridView(List.OfSupportedBots.GetInstance()("Haxton"))
-                    Case "BotManager.Manager.Type.Spegeli"
+                    Case "BotManager.Manager.Spegeli"
                         AddToGridView(List.OfSupportedBots.GetInstance()("Spegeli"))
                 End Select
             End If

@@ -13,7 +13,7 @@ Namespace Windows
                 End While
             End If
             
-            Thread.Sleep(1000)
+            Thread.Sleep(350)
 
             Return p
         End Function

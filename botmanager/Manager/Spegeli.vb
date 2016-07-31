@@ -1,7 +1,7 @@
 ﻿Imports System.Configuration
 Imports BotManager.Properties
 
-Namespace Manager.Type
+Namespace Manager
     Public Class Spegeli
         Inherits Generic
 

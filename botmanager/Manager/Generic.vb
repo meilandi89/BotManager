@@ -5,7 +5,7 @@ Imports BotManager.List
 Imports BotManager.Properties
 Imports BotManager.Windows
 
-Namespace Manager.Type
+Namespace Manager
     Public MustInherit Class Generic
         Protected BotInformation As BotInformation
         Protected ExecutablePath As String = ""
@@ -37,16 +37,15 @@ Namespace Manager.Type
             Dim pInfo As New ProcessStartInfo
             pInfo.WorkingDirectory = Path.GetDirectoryName(botInformation.TempExecutablePath)
             pInfo.FileName = Path.GetFileName(botInformation.TempExecutablePath)
-            If BotInformation.Hide Then
-                pInfo.WindowStyle = ProcessWindowStyle.Hidden
-            End If
+            If BotInformation.Hide Then pInfo.WindowStyle = ProcessWindowStyle.Hidden
             Dim p As Process = CmdLine.Run(pInfo, False)
-            'If ListOfGenericBots.Items.ContainsKey(BotProperties.ProcessId) Then ListOfGenericBots.Items.Remove(BotProperties.ProcessId)
+            If OfGenericBots.Items.ContainsKey(botInformation.ProcessId) Then OfGenericBots.Items.Remove(botInformation.ProcessId)
 
 
             botInformation.ProcessId = p.Id
             botInformation.Handle = p.MainWindowHandle
             botInformation.IsRunning = True
+
             Api.ShowWindow(p.MainWindowHandle, 0)
             Api.SetParent(botInformation.Handle, botInformation.PanelHandle)
 
@@ -55,6 +54,7 @@ Namespace Manager.Type
                 Api.SetWindowPos(botInformation.Handle, 1, 0, 0, Control.FromHandle(botInformation.PanelHandle).Width,
                                  Control.FromHandle(botInformation.PanelHandle).Height, 0)
             End If
+
             OfGenericBots.Items.Add(botInformation.ProcessId, Me)
             _timer.Start()
         End Sub
@@ -64,7 +64,7 @@ Namespace Manager.Type
             CmdLine.Kill(botInformation)
             _startTime = Nothing
             botInformation.IsRunning = False
-            'If ListOfGenericBots.Items.ContainsKey(BotProperties.ProcessId) Then ListOfGenericBots.Items.Remove(BotProperties.ProcessId)
+ '           If OfGenericBots.Items.ContainsKey(botInformation.ProcessId) Then OfGenericBots.Items.Remove(botInformation.ProcessId)
 
             If delete Then
                 Dim directory As String = Path.GetDirectoryName(botInformation.TempExecutablePath)

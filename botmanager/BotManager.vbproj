@@ -89,9 +89,9 @@
     <Compile Include="Helpers\Json.vb" />
     <Compile Include="Properties\BotInformation.vb" />
     <Compile Include="Properties\SupportedBotInformation.vb" />
-    <Compile Include="Manager\Type\Haxton.vb" />
-    <Compile Include="Manager\Type\Maclone.vb" />
-    <Compile Include="Manager\Type\Spegeli.vb" />
+    <Compile Include="Manager\Haxton.vb" />
+    <Compile Include="Manager\Maclone.vb" />
+    <Compile Include="Manager\Spegeli.vb" />
     <Compile Include="UserInterface\Downloading.Designer.vb">
       <DependentUpon>Downloading.vb</DependentUpon>
     </Compile>
@@ -104,7 +104,7 @@
     <Compile Include="UserInterface\SettingsEditor.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Manager\Type\Generic.vb" />
+    <Compile Include="Manager\Generic.vb" />
     <Compile Include="UserInterface\Main.vb">
       <SubType>Form</SubType>
     </Compile>

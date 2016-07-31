@@ -1,6 +1,6 @@
 ﻿Imports BotManager.Properties
 
-Namespace Manager.Type
+Namespace Manager
     Public Class Maclone
         Inherits Generic
                 Public Sub New(ByRef botInformation As BotInformation)

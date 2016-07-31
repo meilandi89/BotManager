@@ -1,7 +1,7 @@
 ﻿Imports System.Configuration
 Imports BotManager.Properties
 
-Namespace Manager.Type
+Namespace Manager
     Public Class Haxton
         Inherits Generic
         Public Sub New(ByRef botInformation As BotInformation)

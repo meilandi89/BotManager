@@ -2,7 +2,6 @@
 Imports System.Management
 Imports BotManager.List
 Imports BotManager.Manager
-Imports BotManager.Manager.Type
 Imports BotManager.Properties
 Imports BotManager.Windows
 
@@ -15,9 +14,9 @@ Namespace UserInterface
             Dim botProperties As New BotInformation()
 
             If ComboBox1.Text = "Haxton" Then
-                botProperties.BotClass = "BotManager.Manager.Type.Haxton"
+                botProperties.BotClass = "BotManager.Manager.Haxton"
             ElseIf ComboBox1.Text = "Spegeli" Then
-                botProperties.BotClass = "BotManager.Manager.Type.Spegeli"
+                botProperties.BotClass = "BotManager.Manager.Spegeli"
             Else
                 botProperties = Nothing
                 MsgBox("Select bot type")
@@ -38,14 +37,12 @@ Namespace UserInterface
                         genericBot.Start()
                     Next
                                             End Sub)
-                t.Wait()
             End If
 
             dialog = Nothing
         End Sub
 
         Private Sub CreateTreeNode(ByRef botInformation As BotInformation)
-            'If Not botInformation.Hide Then
             Dim newTreeNode As New TreeNode
             Dim title As String = botInformation.GetSettingValue("PtcUsername")
             If title.Contains("username") Then title = botInformation.GetSettingValue("GoogleEmail")
@@ -54,7 +51,6 @@ Namespace UserInterface
             newTreeNode.Tag = botInformation
             botInformation.PanelHandle = Panel1.Handle
             TreeView1.Nodes.Add(newTreeNode)
-            'End If
         End Sub
 
         Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
@@ -94,7 +90,6 @@ Namespace UserInterface
                         genericBot.Start()
                     Next
                                             End Sub)
-                t.Wait()
             End If
         End Sub
 
@@ -167,6 +162,17 @@ Namespace UserInterface
             If Not BackgroundWorker.IsBusy Then
                 BackgroundWorker.RunWorkerAsync()
             End If
+
+            For Each treeNode As TreeNode In TreeView1.nodes
+                Dim botInformation = DirectCast(treeNode.Tag, BotInformation)
+                ' Create a buffer of 256 characters
+                Dim caption As New System.Text.StringBuilder(256)
+                Api.GetWindowText(botInformation.Handle, caption, caption.Capacity)
+                Dim str As String() = caption.ToString.Split("|")
+                If str.Length >= 2 Then
+                        treeNode.Text = treeNode.Name & " - " & str(2)
+                End If
+            Next
         End Sub
 
         Private Sub BackgroundWorker_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorker.DoWork

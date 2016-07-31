@@ -15,5 +15,7 @@ Namespace Windows
         Public Shared Function ShowWindow(ByVal hwnd As IntPtr, ByVal nCmdShow As Integer) As Boolean
         End Function
 
+        Public Declare Function GetActiveWindow Lib "user32" Alias "GetActiveWindow" () As IntPtr
+        Public Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As IntPtr, ByVal lpString As System.Text.StringBuilder, ByVal cch As Integer) As Integer
     End Class
 End NameSpace

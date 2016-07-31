@@ -24,6 +24,12 @@ Namespace List
                           .WorkingDirectory = "Haxton/HaxtonBot-master",
                           .ZipName = "Haxton.zip",
                           .ExecutablePath = "Haxton/HaxtonBot-master/PokemonGo.Haxton.Console/bin/Debug/PokemonGo.Haxton.Console.exe"})
+                   ' _instances.Add("Necro", New SupportedBotInformation() With {
+                   '       .Name = "Necro", 
+                    '      .DownloadUrl = "https://github.com/NecronomiconCoding/NecroBot/archive/master.zip",
+                    '      .WorkingDirectory = "Necro/NecroBot-master",
+                    '      .ZipName = "Necro.zip",
+                    '      .ExecutablePath = "Necro/NecroBot-master/PoGo.NecroBot.CLI/bin/Debug/NecroBot.exe"})
                 Return _instances
             Else 
                 Return _instances

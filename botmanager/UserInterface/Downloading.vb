@@ -37,7 +37,6 @@ Namespace UserInterface
             End If
         End Sub
         Private Sub InstallBot(ByRef supportedBotInformation As SupportedBotInformation)
-            BotManager.Helpers.IO.DeleteFilesFromFolder(Helpers.IO.AppData)
             DeleteOldBot(supportedBotInformation)
             DownloadBot(supportedBotInformation)
             UnZipBot(supportedBotInformation)
@@ -130,6 +129,8 @@ Namespace UserInterface
             For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
                 AddSettings(supportedBotInformation)
             Next
+
+            BotManager.Helpers.IO.DeleteFilesFromFolder(Helpers.IO.AppData)
         End Sub
         Private Function Installed() As Boolean
             For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
