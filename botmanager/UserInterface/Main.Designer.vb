@@ -154,15 +154,16 @@
         Me.TreeView1.ShowLines = false
         Me.TreeView1.ShowPlusMinus = false
         Me.TreeView1.ShowRootLines = false
-        Me.TreeView1.Size = New System.Drawing.Size(113, 328)
+        Me.TreeView1.Size = New System.Drawing.Size(113, 353)
         Me.TreeView1.TabIndex = 16
         '
         'Panel1
         '
+        Me.Panel1.BackColor = System.Drawing.Color.Black
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(726, 328)
+        Me.Panel1.Size = New System.Drawing.Size(726, 353)
         Me.Panel1.TabIndex = 17
         '
         'BackgroundWorker
@@ -173,7 +174,7 @@
         Me.SplitContainer1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.SplitContainer1.Location = New System.Drawing.Point(12, 69)
+        Me.SplitContainer1.Location = New System.Drawing.Point(12, 44)
         Me.SplitContainer1.Name = "SplitContainer1"
         '
         'SplitContainer1.Panel1
@@ -183,23 +184,24 @@
         'SplitContainer1.Panel2
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.Panel1)
-        Me.SplitContainer1.Size = New System.Drawing.Size(843, 328)
+        Me.SplitContainer1.Size = New System.Drawing.Size(843, 353)
         Me.SplitContainer1.SplitterDistance = 113
         Me.SplitContainer1.TabIndex = 18
         '
         'Label3
         '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = true
-        Me.Label3.Location = New System.Drawing.Point(12, 50)
+        Me.Label3.Location = New System.Drawing.Point(9, 404)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(49, 16)
+        Me.Label3.Size = New System.Drawing.Size(0, 16)
         Me.Label3.TabIndex = 19
-        Me.Label3.Text = "Label3"
         '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(867, 439)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.SplitContainer1)

@@ -1,6 +1,8 @@
-﻿Namespace Manager
+﻿Imports BotManager.Properties
+
+Namespace Manager
     Public Class BotFactory
-        Public Shared Function GetBot(ByRef botProperties As Properties.BotInformation) As Manager.Generic
+        Public Shared Function GetBot(ByRef botProperties As BotInformation) As Generic
             Select Case botProperties.BotClass
                 Case "BotManager.Manager.Haxton"
                     Return New Haxton(botProperties)

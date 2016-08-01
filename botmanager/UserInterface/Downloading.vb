@@ -4,14 +4,15 @@ Imports BotManager.Properties
 Imports BotManager.Windows
 
 Namespace UserInterface
-
     Public Class Downloading
         Const Nuget As String = "nuget.exe"
         Const NugetArgument As String = "restore "
         Const MsBuild As String = "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
         Private _compIncrement As Integer = 0
         Private _currentComp As Integer = 0
-        Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
+
+        Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
+            Handles BackgroundWorker1.DoWork
             InstallNuget()
             _compIncrement = 90/(List.OfSupportedBots.GetInstance().Count*5)
 
@@ -19,23 +20,31 @@ Namespace UserInterface
                 InstallBot(supportedBotInformation)
             Next
 
-            BackgroundWorker1.ReportProgress(0,  "Complete")
+            BackgroundWorker1.ReportProgress(0, "Complete")
             Threading.Thread.Sleep(500)
         End Sub
-        Private Sub BackgroundWorker1_ReportProgress(sender As Object, e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged
+
+        Private Sub BackgroundWorker1_ReportProgress(sender As Object,
+                                                     e As System.ComponentModel.ProgressChangedEventArgs) _
+            Handles BackgroundWorker1.ProgressChanged
             _currentComp += e.ProgressPercentage
             ProgressBar1.Value = _currentComp
             Label1.Text = e.UserState.ToString()
         End Sub
-        Private Sub BackgroundWorker1_RunWorkerCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BackgroundWorker1.RunWorkerCompleted
+
+        Private Sub BackgroundWorker1_RunWorkerCompleted(sender As Object,
+                                                         e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+            Handles BackgroundWorker1.RunWorkerCompleted
             DialogResult = DialogResult.OK
         End Sub
+
         Private Sub InstallNuget()
-            BackgroundWorker1.ReportProgress(10,  "Downloading Nuget.exe")
+            BackgroundWorker1.ReportProgress(10, "Downloading Nuget.exe")
             If Not File.Exists(Nuget) Then
                 Http.DownloadRepository("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "nuget.exe")
             End If
         End Sub
+
         Private Sub InstallBot(ByRef supportedBotInformation As SupportedBotInformation)
             DeleteOldBot(supportedBotInformation)
             DownloadBot(supportedBotInformation)
@@ -43,18 +52,22 @@ Namespace UserInterface
             DownloadBotPackages(supportedBotInformation)
             CompileBot(supportedBotInformation)
         End Sub
+
         Private Sub DeleteOldBot(ByRef supportedBotInformation As SupportedBotInformation)
             BackgroundWorker1.ReportProgress(_compIncrement, "Deleting " & supportedBotInformation.Name & "directory")
             IO.DeleteFilesFromFolder(supportedBotInformation.Name)
         End Sub
+
         Private Sub DownloadBot(ByRef supportedBotInformation As SupportedBotInformation)
             BackgroundWorker1.ReportProgress(_compIncrement, "Downloading " & supportedBotInformation.Name)
             Http.DownloadRepository(supportedBotInformation.DownloadUrl, supportedBotInformation.ZipName)
         End Sub
+
         Private Sub UnZipBot(ByRef supportedBotInformation As SupportedBotInformation)
             BackgroundWorker1.ReportProgress(_compIncrement, "Unzipping " & supportedBotInformation.Name)
             IO.Unzip(supportedBotInformation.Name)
         End Sub
+
         Private Sub DownloadBotPackages(ByRef supportedBotInformation As SupportedBotInformation)
             BackgroundWorker1.ReportProgress(_compIncrement, "Downloading packages for " & supportedBotInformation.Name)
             Dim nugetInfo As New ProcessStartInfo
@@ -63,6 +76,7 @@ Namespace UserInterface
             nugetInfo.WindowStyle = ProcessWindowStyle.Hidden
             CmdLine.Run(nugetInfo, True)
         End Sub
+
         Private Sub CompileBot(ByRef supportedBotInformation As SupportedBotInformation)
             BackgroundWorker1.ReportProgress(_compIncrement, "Compiling " & supportedBotInformation.Name)
             Dim msBuildInfo As New ProcessStartInfo
@@ -71,15 +85,23 @@ Namespace UserInterface
             msBuildInfo.WindowStyle = ProcessWindowStyle.Hidden
             CmdLine.Run(msBuildInfo, True)
         End Sub
+
         Private Sub AddSettings(ByRef supportedBotInformation As SupportedBotInformation)
-            Select Case supportedBotInformation.Name
-                Case "Spegeli"
-                    SpegeliReadSettings(supportedBotInformation)
-                Case "Haxton"
-                    HaxtonReadSettings(supportedBotInformation)
-            End Select
+            If File.Exists(supportedBotInformation.ExecutablePath) Then
+                Select Case supportedBotInformation.Name
+                    Case "Spegeli"
+                        SpegeliReadSettings(supportedBotInformation)
+                    Case "Haxton"
+                        HaxtonReadSettings(supportedBotInformation)
+                End Select
+            Else
+                Msgbox("Bot Manager failed to compile bot: " & supportedBotInformation.Name)
+                Process.Start(
+                    "http://www.ownedcore.com/forums/pokemon-go/pokemon-go-hacks-cheats/566095-bot-manager-auto-update-includes-multiple-bots-multi-account.html")
+            End If
         End Sub
-         Private Sub HaxtonReadSettings(ByRef supportedBotInformation As SupportedBotInformation)
+
+        Private Sub HaxtonReadSettings(ByRef supportedBotInformation As SupportedBotInformation)
             Dim fileMap As New ExeConfigurationFileMap()
             fileMap.ExeConfigFilename =
                 supportedBotInformation.ExecutablePath & ".config"
@@ -92,7 +114,9 @@ Namespace UserInterface
                 supportedBotInformation.AddKeyValue(setting.[Key], setting.Value.ToString())
             Next
         End Sub
+
         Private Sub SpegeliReadSettings(ByRef supportedBotInformation As SupportedBotInformation)
+
             Dim fileMap As New ExeConfigurationFileMap()
             fileMap.ExeConfigFilename =
                 supportedBotInformation.ExecutablePath & ".config"
@@ -105,14 +129,17 @@ Namespace UserInterface
                 supportedBotInformation.AddKeyValue(setting.Name, setting.Value.ValueXml.InnerText)
             Next
         End Sub
+
         Private Sub btnYes_Click(sender As Object, e As EventArgs) Handles btnYes.Click
             btnYes.Visible = False
             btnNo.Visible = False
             BackgroundWorker1.RunWorkerAsync()
         End Sub
+
         Private Sub btnNo_Click(sender As Object, e As EventArgs) Handles btnNo.Click
             DialogResult = DialogResult.Cancel
         End Sub
+
         Private Sub Downloading_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             If Not File.Exists(MsBuild) Then
                 MsgBox("Please install all the required software!")
@@ -120,11 +147,12 @@ Namespace UserInterface
             End If
             If Not Installed Then
                 BackgroundWorker1.RunWorkerAsync()
-            Else 
+            Else
                 btnYes.Visible = True
                 btnNo.Visible = True
             End If
         End Sub
+
         Private Sub Downloading_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
             For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
                 AddSettings(supportedBotInformation)
@@ -132,6 +160,7 @@ Namespace UserInterface
 
             BotManager.Helpers.IO.DeleteFilesFromFolder(Helpers.IO.AppData)
         End Sub
+
         Private Function Installed() As Boolean
             For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
                 If Not Directory.Exists(supportedBotInformation.WorkingDirectory & "\") Then

@@ -9,7 +9,8 @@ Namespace Manager
     Public MustInherit Class Generic
         Protected BotInformation As BotInformation
         Protected ExecutablePath As String = ""
-        Private ReadOnly _timer As New Timer(1000)
+        Private _p As Process
+        Private ReadOnly _timer As New Timer(500)
         Private _startTime As Date = Nothing
         Public MustOverride Sub WriteSettings()
 
@@ -32,39 +33,46 @@ Namespace Manager
             End If
         End Function
         Public Sub Start()
-                        WriteSettings()
+            WriteSettings()
+            If OfGenericBots.GetInstance().ContainsKey(botInformation.ProcessId) Then OfGenericBots.GetInstance().Remove(botInformation.ProcessId)
 
             Dim pInfo As New ProcessStartInfo
             pInfo.WorkingDirectory = Path.GetDirectoryName(botInformation.TempExecutablePath)
             pInfo.FileName = Path.GetFileName(botInformation.TempExecutablePath)
-            If BotInformation.Hide Then pInfo.WindowStyle = ProcessWindowStyle.Hidden
+
             Dim p As Process = CmdLine.Run(pInfo, False)
-            If OfGenericBots.Items.ContainsKey(botInformation.ProcessId) Then OfGenericBots.Items.Remove(botInformation.ProcessId)
 
+            _p = Nothing
+            _p = p
 
-            botInformation.ProcessId = p.Id
-            botInformation.Handle = p.MainWindowHandle
+            UpdateBotInformation()
+            PutConsoleInPanel()
+
+            OfGenericBots.GetInstance().Add(botInformation.ProcessId, Me)
+            _timer.Start()
+        End Sub
+        Private Sub UpdateBotInformation()
+            botInformation.ProcessId = _p.Id
+            botInformation.Handle = _p.MainWindowHandle
             botInformation.IsRunning = True
-
-            Api.ShowWindow(p.MainWindowHandle, 0)
-            Api.SetParent(botInformation.Handle, botInformation.PanelHandle)
+        End Sub
+         
+        Private Sub PutConsoleInPanel()
+             Api.SetParent(botInformation.Handle, botInformation.PanelHandle)
 
             If botInformation.IsSelected Then
                 Api.ShowWindow(botInformation.Handle, 5)
                 Api.SetWindowPos(botInformation.Handle, 1, 0, 0, Control.FromHandle(botInformation.PanelHandle).Width,
                                  Control.FromHandle(botInformation.PanelHandle).Height, 0)
+            Else 
+                Api.ShowWindow(_p.MainWindowHandle, 0)
             End If
-
-            OfGenericBots.Items.Add(botInformation.ProcessId, Me)
-            _timer.Start()
         End Sub
-
         Public Sub Kill(Optional delete As Boolean = True)
                         _timer.Stop()
             CmdLine.Kill(botInformation)
             _startTime = Nothing
             botInformation.IsRunning = False
- '           If OfGenericBots.Items.ContainsKey(botInformation.ProcessId) Then OfGenericBots.Items.Remove(botInformation.ProcessId)
 
             If delete Then
                 Dim directory As String = Path.GetDirectoryName(botInformation.TempExecutablePath)
@@ -76,7 +84,7 @@ Namespace Manager
         End Sub
 
         Private Sub HandleTimer(sender As Object, e As EventArgs)
-            If Not CmdLine.IsRunning(botInformation) Then
+            If _p.HasExited Then
                 Start()
             End If
 

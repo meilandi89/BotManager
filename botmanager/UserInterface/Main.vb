@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Management
+Imports System.Text
 Imports BotManager.List
 Imports BotManager.Manager
 Imports BotManager.Properties
@@ -86,6 +87,7 @@ Namespace UserInterface
 
                 Dim t As Task = Task.Run(Sub()
                     For Each botInformation As BotInformation In My.Settings.ListOfPropertiesBots.Items
+                        botInformation.IsSelected = False
                         Dim genericBot As Generic = BotFactory.GetBot(botInformation)
                         genericBot.Start()
                     Next
@@ -103,30 +105,26 @@ Namespace UserInterface
                 KillBot(botProperties)
             Next
         End Sub
+
         Private Sub KillBot(ByRef botProperties As BotInformation)
             If Not botProperties.IsRunning Then Exit Sub
-            OfGenericBots.Items(botProperties.ProcessId).Kill()
+            OfGenericBots.GetInstance()(botProperties.ProcessId).Kill()
         End Sub
 
         Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
             If TreeView1.SelectedNode Is Nothing Then Exit Sub
             Dim botProperties = DirectCast(TreeView1.SelectedNode.Tag, BotInformation)
+            Dim dialog As New SettingsEditor(botProperties)
 
-            If Edit(botProperties) Then
+            If dialog.ShowDialog() = DialogResult.OK Then
                 Dim title As String = botProperties.GetSettingValue("PtcUsername")
-                If title.Contains("username") Then title = botProperties.GetSettingValue("GoogleEmail")
+                If title.ToLower().Contains("username") Then title = botProperties.GetSettingValue("GoogleEmail")
                 TreeView1.SelectedNode.Text = title
-                OfGenericBots.Items(botProperties.ProcessId).Kill(False)
-                OfGenericBots.Items(botProperties.ProcessId).Start()
+
+                OfGenericBots.GetInstance()(botProperties.ProcessId).Kill(False)
+                OfGenericBots.GetInstance()(botProperties.ProcessId).Start()
             End If
         End Sub
-        Private Function Edit(bot As BotInformation, optional tabPage As TabPage = Nothing) As Boolean
-            Dim dialog As New SettingsEditor(bot)
-            If dialog.ShowDialog() = DialogResult.OK Then
-                Return True
-            End If
-            Return False
-        End Function
 
         Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) _
             Handles LinkLabel1.LinkClicked
@@ -139,8 +137,8 @@ Namespace UserInterface
             If TreeView1.SelectedNode Is Nothing Then Exit Sub
             Dim botInformation = DirectCast(TreeView1.SelectedNode.Tag, BotInformation)
 
-            OfGenericBots.Items(botInformation.ProcessId).Kill(False)
-            OfGenericBots.Items(botInformation.ProcessId).Start()
+            OfGenericBots.GetInstance()(botInformation.ProcessId).Kill(False)
+            OfGenericBots.GetInstance()(botInformation.ProcessId).Start()
         End Sub
 
         Private Sub btnStop_Click(sender As Object, e As EventArgs) Handles btnStop.Click
@@ -148,7 +146,7 @@ Namespace UserInterface
             Dim botInformation = DirectCast(TreeView1.SelectedNode.Tag, BotInformation)
 
             If botInformation.IsRunning Then
-                OfGenericBots.Items(botInformation.ProcessId).Kill(False)
+                OfGenericBots.GetInstance()(botInformation.ProcessId).Kill(False)
             End If
         End Sub
 
@@ -162,17 +160,22 @@ Namespace UserInterface
             If Not BackgroundWorker.IsBusy Then
                 BackgroundWorker.RunWorkerAsync()
             End If
-
+            Dim total As Double = 0
             For Each treeNode As TreeNode In TreeView1.nodes
                 Dim botInformation = DirectCast(treeNode.Tag, BotInformation)
-                ' Create a buffer of 256 characters
-                Dim caption As New System.Text.StringBuilder(256)
-                Api.GetWindowText(botInformation.Handle, caption, caption.Capacity)
-                Dim str As String() = caption.ToString.Split("|")
-                If str.Length >= 2 Then
+
+                If botInformation.IsRunning Then
+                    Dim caption As New StringBuilder(256)
+                    Api.GetWindowText(botInformation.Handle, caption, caption.Capacity)
+                    Dim str As String() = caption.ToString.Split("|")
+                    If str.Length >= 2 Then
                         treeNode.Text = treeNode.Name & " - " & str(2)
+                        total += CDbl(str(2).Split(":")(1).Trim())
+                    End If
                 End If
             Next
+
+            Label3.Text = String.Format("Total Bots: {0}, Average Exp: {1}, Total Exp: {2}", TreeView1.Nodes.Count, total/TreeView1.Nodes.Count, total)
         End Sub
 
         Private Sub BackgroundWorker_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorker.DoWork
@@ -188,12 +191,7 @@ Namespace UserInterface
         End Sub
 
         Private Function ContainsProcess(commandLine As String)
-            For Each botProcessId As Integer In OfGenericBots.Items.Keys
-                If commandLine.Contains(botProcessId.ToString())
-                    Return True
-                End If
-            Next
-            Return False
+            Return OfGenericBots.GetInstance().Keys.Any(Function(botProcessId) commandLine.Contains(botProcessId.ToString()))
         End Function
 
         Private Sub TreeView1_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeView1.AfterSelect
