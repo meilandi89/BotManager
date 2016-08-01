@@ -89,20 +89,20 @@ Namespace Manager
         End Sub
 
         Public Sub Kill(Optional delete As Boolean = True)
-            _timer.Stop()
-            _p.Kill()
-            _startTime = Nothing
-            IsRunning = False
-
+            If IsRunning Then
+                _timer.Stop()
+                _p.Kill()
+                _startTime = Nothing
+                IsRunning = False
+            End If
             If delete Then
-                Dim directory As String = Path.GetDirectoryName(botInformation.TempExecutablePath)
+                Dim directory As String = Path.GetDirectoryName(BotInformation.TempExecutablePath)
 
                 While Not IO.DirectoryIsEmpty(directory)
                     IO.DeleteFilesFromFolder(directory)
                 End While
             End If
         End Sub
-
         Private Sub HandleTimer(sender As Object, e As EventArgs)
             If _p.HasExited Then
                 Start()

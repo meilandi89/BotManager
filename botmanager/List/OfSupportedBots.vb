@@ -46,7 +46,8 @@ Namespace List
                           .WorkingDirectory = "Necro/NecroBot-master",
                           .ZipName = "Necro.zip",
                           .UnZipDirectory = "Necro",
-                          .ExecutablePath = "Necro/NecroBot-master/PoGo.NecroBot.CLI/bin/Debug/NecroBot.exe"})
+                          .ExecutablePath = "Necro/NecroBot-master/PoGo.NecroBot.CLI/bin/Debug/NecroBot.exe",
+                          .DisplayAsBot = False})
 
                   _instances.Add("NecroAPI", New SupportedBotInformation() With {
                           .Name = "NecroAPI", 
