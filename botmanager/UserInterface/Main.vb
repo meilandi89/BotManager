@@ -10,7 +10,9 @@ Namespace UserInterface
     Public Class Main
         Private ReadOnly _
             _processSearcher As New ManagementObjectSearcher("SELECT * FROM Win32_Process WHERE Name='WerFault.exe'")
+
         Private ReadOnly _bots As New ArrayList
+
         Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             Try
                 For Each supportedBotInformation As SupportedBotInformation In OfSupportedBots.GetInstance().Values
@@ -22,9 +24,11 @@ Namespace UserInterface
                 MsgBox("Error at load " & ex.Message)
             End Try
         End Sub
+
         Private Sub Main_Resize(sender As Object, e As EventArgs) Handles MyBase.ResizeEnd
             ResizeCmd()
         End Sub
+
         Private Sub Main_HasLoad(sender As Object, e As EventArgs) Handles MyBase.Shown
             Generic.PanelHandle = botPanel.Handle
             'If New Downloading().ShowDialog() = DialogResult.OK Then
@@ -39,19 +43,21 @@ Namespace UserInterface
                 StartAllBots()
             End If
         End Sub
+
         Private Sub Main_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed
             Dim t As Task = Task.Run(Sub()
-                                         For Each bot As Generic In _bots
-                                             bot.Dispose()
-                                         Next
-                                     End Sub)
+                For Each bot As Generic In _bots
+                    bot.Dispose()
+                Next
+                                        End Sub)
             t.Wait()
             My.Settings.Save()
         End Sub
+
         Private Sub CreateTreeNode(ByRef botInformation As BotInformation)
             Dim newTreeNode As New TreeNode
             Dim title As String = botInformation.GetSettingValue("PtcUsername")
-            If title.Contains("username") Then title = botInformation.GetSettingValue("GoogleEmail")
+            If title.ToLower().Contains("username") Then title = botInformation.GetSettingValue("GoogleEmail")
             newTreeNode.Name = title
             newTreeNode.Text = title
             Dim bot As Generic = BotFactory.GetBot(botInformation)
@@ -59,6 +65,7 @@ Namespace UserInterface
             newTreeNode.Tag = bot
             botTree.Nodes.Add(newTreeNode)
         End Sub
+
         Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
             Dim botInformation As New BotInformation()
 
@@ -66,7 +73,7 @@ Namespace UserInterface
                 botInformation.BotClass = "BotManager.Manager.Haxton"
             ElseIf botSelectBox.Text = "Spegeli" Then
                 botInformation.BotClass = "BotManager.Manager.Spegeli"
-             ElseIf botSelectBox.Text = "Necro" Then
+            ElseIf botSelectBox.Text = "Necro" Then
                 botInformation.BotClass = "BotManager.Manager.Necro"
             Else
                 botInformation = Nothing
@@ -86,6 +93,7 @@ Namespace UserInterface
 
             dialog = Nothing
         End Sub
+
         Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
             If botTree.SelectedNode Is Nothing Then Exit Sub
             Dim bot = DirectCast(botTree.SelectedNode.Tag, Generic)
@@ -100,6 +108,7 @@ Namespace UserInterface
                 bot.Start()
             End If
         End Sub
+
         Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
             If botTree.SelectedNode Is Nothing Then Exit Sub
             Dim bot = DirectCast(botTree.SelectedNode.Tag, Generic)
@@ -108,12 +117,14 @@ Namespace UserInterface
             My.Settings.ListOfPropertiesBots.Items.Remove(bot.BotInformation)
             botTree.Nodes.Remove(botTree.SelectedNode)
         End Sub
+
         Private Sub btnRestart_Click(sender As Object, e As EventArgs) Handles btnRestart.Click
             If botTree.SelectedNode Is Nothing Then Exit Sub
             Dim bot = DirectCast(botTree.SelectedNode.Tag, Generic)
             If bot.IsRunning Then bot.Kill(False)
             bot.Start()
         End Sub
+
         Private Sub btnStop_Click(sender As Object, e As EventArgs) Handles btnStop.Click
             If botTree.SelectedNode Is Nothing Then Exit Sub
             Dim bot = DirectCast(botTree.SelectedNode.Tag, Generic)
@@ -122,24 +133,30 @@ Namespace UserInterface
                 bot.Kill(False)
             End If
         End Sub
+
         Private Sub btnRestartAll_Click(sender As Object, e As EventArgs) Handles btnRestartAll.Click
             KillAllBots()
             StartAllBots()
         End Sub
+
         Private Sub btnStopAll_Click(sender As Object, e As EventArgs) Handles btnStopAll.Click
             KillAllBots()
         End Sub
+
         Private Sub repLabel_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) _
             Handles repLabel.LinkClicked
             repLabel.LinkVisited = True
             Process.Start(
                 "http://www.ownedcore.com/forums/pokemon-go/pokemon-go-hacks-cheats/566095-bot-manager-auto-update-includes-multiple-bots-multi-account.html")
         End Sub
-        Private Sub paypalLabel_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles paypalLabel.LinkClicked
+
+        Private Sub paypalLabel_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs) _
+            Handles paypalLabel.LinkClicked
             repLabel.LinkVisited = True
             Process.Start(
                 "https://www.paypal.me/chancity")
         End Sub
+
         Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer.Tick
             If Not BackgroundWorker.IsBusy Then
                 BackgroundWorker.RunWorkerAsync()
@@ -177,8 +194,10 @@ Namespace UserInterface
                 End If
             Next
 
-            statusLabel.Text = String.Format("Total Bots: {0}, Average EXP: {1}, Total EXP: {2}", botTree.Nodes.Count, total / botTree.Nodes.Count, total)
+            statusLabel.Text = String.Format("Total Bots: {0}, Average EXP: {1}, Total EXP: {2}", botTree.Nodes.Count,
+                                             total/botTree.Nodes.Count, total)
         End Sub
+
         Private Sub botTree_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles botTree.AfterSelect
             If Not e.Node.IsSelected Then Exit Sub
             Dim bot = DirectCast(e.Node.Tag, Generic)
@@ -186,6 +205,7 @@ Namespace UserInterface
             Api.SetWindowPos(bot.Handle, 1, 0, 0, botPanel.Width, botPanel.Height, 0)
             bot.IsSelected = True
         End Sub
+
         Private Sub botTree_BeforeSelect(sender As Object, e As TreeViewCancelEventArgs) _
             Handles botTree.BeforeSelect
 
@@ -199,6 +219,7 @@ Namespace UserInterface
                 bot.IsSelected = False
             End If
         End Sub
+
         Private Sub TimerTask()
             For Each process As ManagementObject In _processSearcher.Get()
                 If ContainsProcess(process("CommandLine").ToString()) Then
@@ -206,33 +227,37 @@ Namespace UserInterface
                 End If
             Next
         End Sub
+
         Private Sub BackgroundWorker_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgroundWorker.DoWork
             TimerTask()
         End Sub
+
         Private Sub ResizeCmd()
             If botTree.SelectedNode Is Nothing Then Exit Sub
             Dim bot = DirectCast(botTree.SelectedNode.Tag, Generic)
             Api.SetWindowPos(bot.Handle, 1, 0, 0, botPanel.Width, botPanel.Height, 0)
         End Sub
+
         Private Sub StartAllBots()
             Dim t As Task = Task.Run(Sub()
-                                         For Each bot As Generic In _bots
-                                             If Not bot.IsRunning Then bot.Start()
-                                         Next
-                                     End Sub)
+                For Each bot As Generic In _bots
+                    If Not bot.IsRunning Then bot.Start()
+                Next
+                                        End Sub)
         End Sub
+
         Private Sub KillAllBots()
             Dim t As Task = Task.Run(Sub()
-                                         For Each bot As Generic In _bots
-                                             If bot.IsRunning Then bot.Kill(False)
-                                         Next
-                                     End Sub)
+                For Each bot As Generic In _bots
+                    If bot.IsRunning Then bot.Kill(False)
+                Next
+                                        End Sub)
 
             t.Wait()
         End Sub
-        Private Function ContainsProcess(commandLine As String)
-            Return _bots.Cast(Of Generic)().Any(Function(bot) commandLine.Contains(bot.ProcessId.ToString()))
-        End Function
 
+        Private Function ContainsProcess(commandLine As String)
+            Return _bots.Cast (Of Generic)().Any(Function(bot) commandLine.Contains(bot.ProcessId.ToString()))
+        End Function
     End Class
 End NameSpace
