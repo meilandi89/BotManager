@@ -22,31 +22,6 @@ Namespace Windows
             Return p
         End Function
 
-        Public Shared Sub Kill(ByRef botProperties As BotInformation)
-            Try
-                Dim p As Process = Process.GetProcessById(botProperties.ProcessId)
-                p.Kill()
-                botProperties.IsRunning = False
-            Catch
-            End Try
-        End Sub
-
-        Public Shared Function IsRunning(ByRef botProperties As BotInformation) As Boolean
-            Try
-                Using p = Process.GetProcessById(botProperties.ProcessId)
-                    If Not p.Responding Then
-                        Kill(botProperties)
-                        Return False
-                    End If
-                End Using
-                Return True
-                
-            Catch
-                Return False
-            End Try
-        End Function
-
-
         <DllImport("kernel32.dll")>
         Private Shared Function CreateProcess(lpApplicationName As String, lpCommandLine As String,
                                               lpProcessAttributes As IntPtr, lpThreadAttributes As IntPtr,

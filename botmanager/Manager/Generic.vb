@@ -7,7 +7,26 @@ Imports BotManager.Windows
 
 Namespace Manager
     Public MustInherit Class Generic
-        Protected BotInformation As BotInformation
+        Implements IDisposable
+        Public IsRunning As Boolean = False
+        Public IsSelected As Boolean = False
+        Public Shared PanelHandle As Integer
+        Private _processId As Integer
+        Public ReadOnly Property ProcessId() As Integer
+            Get
+                Return _processId
+            End Get
+        End Property
+        Private _handle As Integer = 0
+
+        Public ReadOnly Property Handle() As Integer
+            Get
+                Return _handle
+            End Get
+        End Property
+
+        Public BotInformation As BotInformation
+
         Protected ExecutablePath As String = ""
         Private _p As Process
         Private ReadOnly _timer As New Timer(500)
@@ -32,9 +51,9 @@ Namespace Manager
                 Return False
             End If
         End Function
+
         Public Sub Start()
             WriteSettings()
-            If OfGenericBots.GetInstance().ContainsKey(botInformation.ProcessId) Then OfGenericBots.GetInstance().Remove(botInformation.ProcessId)
 
             Dim pInfo As New ProcessStartInfo
             pInfo.WorkingDirectory = Path.GetDirectoryName(botInformation.TempExecutablePath)
@@ -48,31 +67,32 @@ Namespace Manager
             UpdateBotInformation()
             PutConsoleInPanel()
 
-            OfGenericBots.GetInstance().Add(botInformation.ProcessId, Me)
             _timer.Start()
         End Sub
-        Private Sub UpdateBotInformation()
-            botInformation.ProcessId = _p.Id
-            botInformation.Handle = _p.MainWindowHandle
-            botInformation.IsRunning = True
-        End Sub
-         
-        Private Sub PutConsoleInPanel()
-             Api.SetParent(botInformation.Handle, botInformation.PanelHandle)
 
-            If botInformation.IsSelected Then
-                Api.ShowWindow(botInformation.Handle, 5)
-                Api.SetWindowPos(botInformation.Handle, 1, 0, 0, Control.FromHandle(botInformation.PanelHandle).Width,
-                                 Control.FromHandle(botInformation.PanelHandle).Height, 0)
-            Else 
+        Private Sub UpdateBotInformation()
+            _processId = _p.Id
+            _handle = _p.MainWindowHandle
+            IsRunning = True
+        End Sub
+
+        Private Sub PutConsoleInPanel()
+            Api.SetParent(_handle, PanelHandle)
+
+            If IsSelected Then
+                Api.ShowWindow(Handle, 5)
+                Api.SetWindowPos(Handle, 1, 0, 0, Control.FromHandle(PanelHandle).Width,
+                                 Control.FromHandle(PanelHandle).Height, 0)
+            Else
                 Api.ShowWindow(_p.MainWindowHandle, 0)
             End If
         End Sub
+
         Public Sub Kill(Optional delete As Boolean = True)
-                        _timer.Stop()
-            CmdLine.Kill(botInformation)
+            _timer.Stop()
+            _p.Kill()
             _startTime = Nothing
-            botInformation.IsRunning = False
+            IsRunning = False
 
             If delete Then
                 Dim directory As String = Path.GetDirectoryName(botInformation.TempExecutablePath)
@@ -99,6 +119,17 @@ Namespace Manager
                     _startTime = Now()
                 End If
             End If
+        End Sub
+
+        Public Sub Dispose() Implements IDisposable.Dispose
+            If IsRunning Then Kill(True)
+            IsRunning = Nothing
+            IsSelected = Nothing
+            _handle  = Nothing
+            ExecutablePath = Nothing
+            _p.Dispose()
+            _timer.Dispose()
+            _startTime = Nothing
         End Sub
     End Class
 End NameSpace

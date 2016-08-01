@@ -41,6 +41,8 @@
         Me.BackgroundWorker = New System.ComponentModel.BackgroundWorker()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.btnStopAll = New System.Windows.Forms.Button()
+        Me.btnRestartAll = New System.Windows.Forms.Button()
         CType(Me.SplitContainer1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SplitContainer1.Panel1.SuspendLayout
         Me.SplitContainer1.Panel2.SuspendLayout
@@ -50,7 +52,7 @@
         'btnAdd
         '
         Me.btnAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.btnAdd.Location = New System.Drawing.Point(799, 404)
+        Me.btnAdd.Location = New System.Drawing.Point(799, 406)
         Me.btnAdd.Margin = New System.Windows.Forms.Padding(4)
         Me.btnAdd.Name = "btnAdd"
         Me.btnAdd.Size = New System.Drawing.Size(49, 25)
@@ -197,12 +199,36 @@
         Me.Label3.Size = New System.Drawing.Size(0, 16)
         Me.Label3.TabIndex = 19
         '
+        'btnStopAll
+        '
+        Me.btnStopAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnStopAll.Location = New System.Drawing.Point(353, 406)
+        Me.btnStopAll.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnStopAll.Name = "btnStopAll"
+        Me.btnStopAll.Size = New System.Drawing.Size(91, 25)
+        Me.btnStopAll.TabIndex = 20
+        Me.btnStopAll.Text = "Stop All"
+        Me.btnStopAll.UseVisualStyleBackColor = true
+        '
+        'btnRestartAll
+        '
+        Me.btnRestartAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.btnRestartAll.Location = New System.Drawing.Point(452, 406)
+        Me.btnRestartAll.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnRestartAll.Name = "btnRestartAll"
+        Me.btnRestartAll.Size = New System.Drawing.Size(91, 25)
+        Me.btnRestartAll.TabIndex = 21
+        Me.btnRestartAll.Text = "Restart All"
+        Me.btnRestartAll.UseVisualStyleBackColor = true
+        '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(867, 439)
+        Me.Controls.Add(Me.btnRestartAll)
+        Me.Controls.Add(Me.btnStopAll)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.SplitContainer1)
         Me.Controls.Add(Me.btnStop)
@@ -242,5 +268,7 @@ End Sub
         Friend WithEvents BackgroundWorker As System.ComponentModel.BackgroundWorker
         Friend WithEvents SplitContainer1 As SplitContainer
         Friend WithEvents Label3 As Label
+        Friend WithEvents btnStopAll As Button
+        Friend WithEvents btnRestartAll As Button
     End Class
 End NameSpace

@@ -8,13 +8,8 @@ Namespace Properties
         Public ProjectPath As String = ""
         Public RestartTimer As Integer
         Public Hide As Boolean = False
-        Public IsRunning As Boolean = False
-        Public IsSelected As Boolean = False
         Public BotClass As String
 
-        <NonSerialized()> Public ProcessId As Integer = 0
-        <NonSerialized()> Public Handle As Integer = 0
-        <NonSerialized()> Public Shared PanelHandle As Integer = 0
          Public Property SettingKeys As New List(Of String) Implements ISettings.SettingKeys
 
         Public Property SettingValues As New List(Of String) Implements ISettings.SettingValues

@@ -109,7 +109,6 @@
     <Compile Include="Interfaces\Settings.vb" />
     <Compile Include="List\OfSupportedBots.vb" />
     <Compile Include="Manager\BotFactory.vb" />
-    <Compile Include="List\OfGenericBots.vb" />
     <Compile Include="List\OfPropertiesBots.vb" />
     <Compile Include="Helpers\Http.vb" />
     <Compile Include="Helpers\IO.vb" />
