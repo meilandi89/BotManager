@@ -80,7 +80,9 @@ Namespace UserInterface
             If supportedBotInformation.MoveFolder Then
                 Directory.Delete(supportedBotInformation.MoveTo)
                 Directory.Move(supportedBotInformation.WorkingDirectory, supportedBotInformation.MoveTo)
+                Directory.Delete(supportedBotInformation.Name)
             End If
+            Directory.Delete(supportedBotInformation.ZipName)
         End Sub
 
         Private Sub DownloadBotPackages(ByRef supportedBotInformation As SupportedBotInformation)
