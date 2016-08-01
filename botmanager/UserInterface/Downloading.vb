@@ -82,7 +82,7 @@ Namespace UserInterface
                 Directory.Move(supportedBotInformation.WorkingDirectory, supportedBotInformation.MoveTo)
                 Directory.Delete(supportedBotInformation.Name)
             End If
-            Directory.Delete(supportedBotInformation.ZipName)
+            File.Delete(supportedBotInformation.ZipName)
         End Sub
 
         Private Sub DownloadBotPackages(ByRef supportedBotInformation As SupportedBotInformation)
