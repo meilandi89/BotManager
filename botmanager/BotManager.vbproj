@@ -106,7 +106,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\Settings.vb" />
+    <Compile Include="Interfaces\ISettings.vb" />
     <Compile Include="List\OfSupportedBots.vb" />
     <Compile Include="Manager\BotFactory.vb" />
     <Compile Include="List\OfPropertiesBots.vb" />
@@ -116,7 +116,7 @@
     <Compile Include="Properties\BotInformation.vb" />
     <Compile Include="Properties\SupportedBotInformation.vb" />
     <Compile Include="Manager\Haxton.vb" />
-    <Compile Include="Manager\Maclone.vb" />
+    <Compile Include="Manager\Necro.vb" />
     <Compile Include="Manager\Spegeli.vb" />
     <Compile Include="UserInterface\Downloading.Designer.vb">
       <DependentUpon>Downloading.vb</DependentUpon>

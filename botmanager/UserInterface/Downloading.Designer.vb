@@ -34,8 +34,7 @@
         '
         Me.Label1.AutoSize = true
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Label1.Location = New System.Drawing.Point(15, 25)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(11, 20)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(88, 18)
         Me.Label1.TabIndex = 0
@@ -43,10 +42,9 @@
         '
         'ProgressBar1
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(19, 64)
-        Me.ProgressBar1.Margin = New System.Windows.Forms.Padding(4)
+        Me.ProgressBar1.Location = New System.Drawing.Point(14, 52)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(379, 58)
+        Me.ProgressBar1.Size = New System.Drawing.Size(376, 47)
         Me.ProgressBar1.TabIndex = 1
         '
         'BackgroundWorker1
@@ -55,9 +53,10 @@
         '
         'btnYes
         '
-        Me.btnYes.Location = New System.Drawing.Point(130, 23)
+        Me.btnYes.Location = New System.Drawing.Point(98, 19)
+        Me.btnYes.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.btnYes.Name = "btnYes"
-        Me.btnYes.Size = New System.Drawing.Size(75, 23)
+        Me.btnYes.Size = New System.Drawing.Size(56, 19)
         Me.btnYes.TabIndex = 2
         Me.btnYes.Text = "Yes"
         Me.btnYes.UseVisualStyleBackColor = true
@@ -65,9 +64,10 @@
         '
         'btnNo
         '
-        Me.btnNo.Location = New System.Drawing.Point(211, 23)
+        Me.btnNo.Location = New System.Drawing.Point(158, 19)
+        Me.btnNo.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.btnNo.Name = "btnNo"
-        Me.btnNo.Size = New System.Drawing.Size(75, 23)
+        Me.btnNo.Size = New System.Drawing.Size(56, 19)
         Me.btnNo.TabIndex = 3
         Me.btnNo.Text = "No"
         Me.btnNo.UseVisualStyleBackColor = true
@@ -75,15 +75,14 @@
         '
         'Downloading
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8!, 16!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(416, 144)
+        Me.ClientSize = New System.Drawing.Size(402, 117)
         Me.Controls.Add(Me.btnNo)
         Me.Controls.Add(Me.btnYes)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Downloading"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Download Manager"

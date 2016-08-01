@@ -54,8 +54,8 @@ Namespace Helpers
             End Try
         End Function
 
-        Public Shared Sub Unzip(fileName As String)
-            ZipFile.ExtractToDirectory(fileName & ".zip", fileName)
+        Public Shared Sub Unzip(fileName As String, destination As String)
+            ZipFile.ExtractToDirectory(fileName, destination)
         End Sub
     End Class
 End NameSpace

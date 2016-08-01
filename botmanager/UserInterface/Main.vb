@@ -19,6 +19,8 @@ Namespace UserInterface
                 botInformation.BotClass = "BotManager.Manager.Haxton"
             ElseIf ComboBox1.Text = "Spegeli" Then
                 botInformation.BotClass = "BotManager.Manager.Spegeli"
+            ElseIf ComboBox1.Text = "Necro" Then
+                botInformation.BotClass = "BotManager.Manager.Necro"
             Else
                 botInformation = Nothing
                 MsgBox("Select bot type")
@@ -158,6 +160,7 @@ Namespace UserInterface
 
         Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             For Each supportedBotInformation As SupportedBotInformation In OfSupportedBots.GetInstance().Values
+                If Not supportedBotInformation.DisplayAsBot Then Continue For
                 ComboBox1.Items.Add(supportedBotInformation.Name)
             Next
         End Sub

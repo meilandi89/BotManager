@@ -8,6 +8,8 @@ Namespace Manager
                     Return New Haxton(botProperties)
                 Case "BotManager.Manager.Spegeli"
                     Return New Spegeli(botProperties)
+                Case "BotManager.Manager.Necro"
+                    Return New Necro(botProperties)
             End Select
 
             Throw New Exception("Uknown Bot Class!")
