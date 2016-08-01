@@ -31,15 +31,18 @@ Namespace UserInterface
                                                      e As System.ComponentModel.ProgressChangedEventArgs) _
             Handles BackgroundWorker1.ProgressChanged
             _currentComp += e.ProgressPercentage
-            ProgressBar1.Value = _currentComp
-            Label1.Text = e.UserState.ToString()
+            downloadProgress.Value = _currentComp
+            downloadLabel.Text = e.UserState.ToString()
         End Sub
 
         Private Sub BackgroundWorker1_RunWorkerCompleted(sender As Object,
                                                          e As System.ComponentModel.RunWorkerCompletedEventArgs) _
             Handles BackgroundWorker1.RunWorkerCompleted
             DialogResult = DialogResult.OK
+            Main.Show()
+            Me.Close()
         End Sub
+
         Private Sub InstallBotFirstStep(ByRef supportedBotInformation As SupportedBotInformation)
             DeleteOldBot(supportedBotInformation)
             DownloadBot(supportedBotInformation)
@@ -153,11 +156,14 @@ Namespace UserInterface
         Private Sub btnYes_Click(sender As Object, e As EventArgs) Handles btnYes.Click
             btnYes.Visible = False
             btnNo.Visible = False
+            Me.Size = New Size("296", "92")
             BackgroundWorker1.RunWorkerAsync()
         End Sub
 
         Private Sub btnNo_Click(sender As Object, e As EventArgs) Handles btnNo.Click
             DialogResult = DialogResult.Cancel
+            Main.Show()
+            Me.Close()
         End Sub
 
         Private Sub Downloading_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -167,15 +173,17 @@ Namespace UserInterface
             End If
             If Not Installed Then
                 BackgroundWorker1.RunWorkerAsync()
+                Me.Size = New Size("296", "92")
             Else
                 btnYes.Visible = True
                 btnNo.Visible = True
             End If
+            Control.CheckForIllegalCrossThreadCalls = False
         End Sub
 
         Private Sub Downloading_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
             For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
-                If supportedBotInformation.ReadSettings  Then AddSettings(supportedBotInformation)
+                If supportedBotInformation.ReadSettings Then AddSettings(supportedBotInformation)
             Next
 
             BotManager.Helpers.IO.DeleteFilesFromFolder(Helpers.IO.AppData)
@@ -183,7 +191,7 @@ Namespace UserInterface
 
         Private Function Installed() As Boolean
             For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
-                If Not Directory.Exists(supportedBotInformation.WorkingDirectory & "\") Then
+                If supportedBotInformation.Compile AndAlso Not Directory.Exists(supportedBotInformation.WorkingDirectory & "\") Then
                     Return False
                 End If
             Next
