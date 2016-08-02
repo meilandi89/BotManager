@@ -58,6 +58,9 @@ Namespace UserInterface
             End If
             _botProperties.Hide = chkHide.Checked
             If chkBatchAdd.Checked Then
+                Dim currentLineIndex As String = ""
+                Dim currentLine As String = 0
+                Dim currentField As String = ""
                 Try
                     Dim reader As New StreamReader(fileLoc.Text)
                     Dim content = reader.ReadToEnd().Trim().Split(vbCrLf)
@@ -65,7 +68,9 @@ Namespace UserInterface
                     Dim newBotProperty As BotInformation
 
 
-                    For Each line As String In content
+                    For j As Integer = 0 To content.Length - 1
+                        currentLine = content(j)
+                        currentLineIndex = j
                         newBotProperty = New BotInformation()
                         newBotProperty.Hide = _botProperties.Hide
                         newBotProperty.RestartTimer = _botProperties.RestartTimer
@@ -74,20 +79,24 @@ Namespace UserInterface
                             newBotProperty.AddKeyValue(_botProperties.SettingKeys(i), _botProperties.SettingValues(i))
                         Next
 
-                        Dim settings As String() = line.Trim(vbLf).Split(",")
+                        Dim settings As String() = currentLine.Trim(vbLf).Split(",")
                         If settings.Length = 0 Then Continue For
                         For Each setting As String In settings
                             Dim field As String = setting.Split(":")(0)
                             Dim value As String = setting.Split(":")(1)
                             If field = "" OrElse value = "" Then Continue For
-                            newBotProperty.SettingValues(newBotProperty.SettingKeys.IndexOf(field)) = value
+
+                            currentField = field
+                            Dim indexOf As Integer = newBotProperty.SettingKeys.IndexOf(field)
+                            newBotProperty.SettingValues(indexOf) = value
                         Next
 
                         BatchAddProperties.Add(newBotProperty)
                     Next
                 Catch ex As Exception
-                    MsgBox(ex.Message)
-                    MsgBox(ex.StackTrace)
+                    MsgBox(ex.Message & vbCrLf & vbCrLf &
+                           "Line Index: " & currentLineIndex & vbCrLf &
+                           "Field: " & currentField)
                     Exit Sub
                 End Try
             Else
