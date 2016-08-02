@@ -1,22 +1,24 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Threading
-Imports BotManager.Properties
 
 Namespace Windows
     Public Class CmdLine
         Public Shared Function Run(ByRef pInfo As ProcessStartInfo, waitForExit As Boolean) As Process
             If Not waitForExit Then
                 Dim pId = StartProcessNoActivate(pInfo)
-                Thread.Sleep(300)
-                Return Process.GetProcessById(pId)
+                Thread.Sleep(700)
+                Try
+                    Return Process.GetProcessById(pId)
+                Catch
+                    Return Nothing
+                End Try
             End If
 
             Dim p As Process = Process.Start(pInfo)
             If waitForExit Then
                 While Not p.HasExited
-                    Thread.Sleep(200)
+                    Thread.Sleep(50)
                 End While
-                Thread.Sleep(300)
             End If
 
             Return p
@@ -53,7 +55,7 @@ Namespace Windows
             CloseHandle(pi.hProcess)
             CloseHandle(pi.hThread)
 
-            Return  pi.dwProcessId
+            Return pi.dwProcessId
         End Function
 
         <StructLayout(LayoutKind.Sequential, CharSet := CharSet.Unicode)>

@@ -1,7 +1,6 @@
 ﻿Imports System.Net
 
 Namespace Helpers
-
     Public Class Http
         Public Shared Sub DownloadRepository(fileUrl As String, fileName As String)
             Dim saveAs as string = fileName
@@ -15,7 +14,7 @@ Namespace Helpers
                 Exit sub 'Exit sub or function, because if not found can't be downloaded
             End Try
             Dim length As Long = theResponse.ContentLength
-            Dim writeStream As New System.IO.FileStream(saveAs, System.IO.FileMode.Create)
+            Dim writeStream As New FileStream(saveAs, FileMode.Create)
             Dim nRead As Integer
             Do
                 Dim readBytes(4095) As Byte

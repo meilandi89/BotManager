@@ -1,4 +1,5 @@
 ﻿Imports System.Configuration
+Imports BotManager.List
 Imports BotManager.Properties
 
 Namespace Manager
@@ -7,9 +8,10 @@ Namespace Manager
 
         Public Sub New(ByRef botInformation As BotInformation)
             MyBase.New(botInformation)
-            ExecutablePath =  List.OfSupportedBots.GetInstance()("Spegeli").ExecutablePath
+            ExecutablePath = OfSupportedBots.GetInstance()("Spegeli").ExecutablePath
             Initialize()
         End Sub
+
         Public Overrides Sub WriteSettings()
             Dim fileMap As New ExeConfigurationFileMap()
             fileMap.ExeConfigFilename =

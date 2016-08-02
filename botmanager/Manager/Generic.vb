@@ -1,7 +1,5 @@
-﻿Imports System.ComponentModel
-Imports System.Timers
+﻿Imports System.Timers
 Imports BotManager.Helpers
-Imports BotManager.List
 Imports BotManager.Properties
 Imports BotManager.Windows
 
@@ -12,14 +10,16 @@ Namespace Manager
         Public IsSelected As Boolean = False
         Public Shared PanelHandle As Integer
         Private _processId As Integer
-        Public ReadOnly Property ProcessId() As Integer
+
+        Public ReadOnly Property ProcessId As Integer
             Get
                 Return _processId
             End Get
         End Property
-        Private _handle As Integer = 0
 
-        Public ReadOnly Property Handle() As Integer
+        Private _handle As IntPtr = 0
+
+        Public ReadOnly Property Handle As IntPtr
             Get
                 Return _handle
             End Get
@@ -32,6 +32,7 @@ Namespace Manager
         Private ReadOnly _timer As New Timer(500)
         Private _startTime As Date = Nothing
         Public MustOverride Sub WriteSettings()
+
 
         Public Sub New(ByRef botInformation As BotInformation)
             Me.botInformation = botInformation
@@ -58,7 +59,7 @@ Namespace Manager
             Dim pInfo As New ProcessStartInfo
             pInfo.WorkingDirectory = Path.GetDirectoryName(botInformation.TempExecutablePath)
             pInfo.FileName = Path.GetFileName(botInformation.TempExecutablePath)
-
+            pInfo.WindowStyle = ProcessWindowStyle.Maximized
             Dim p As Process = CmdLine.Run(pInfo, False)
 
             _p = Nothing
@@ -66,7 +67,7 @@ Namespace Manager
 
             UpdateBotInformation()
             PutConsoleInPanel()
-
+            Api.SendMessage(_p.MainWindowHandle, &H100, 13, 0)
             _timer.Start()
         End Sub
 
@@ -76,7 +77,7 @@ Namespace Manager
             IsRunning = True
         End Sub
 
-        Private Sub PutConsoleInPanel()
+        Public Sub PutConsoleInPanel()
             Api.SetParent(_handle, PanelHandle)
 
             If IsSelected Then
@@ -89,13 +90,17 @@ Namespace Manager
         End Sub
 
         Public Sub Kill(Optional delete As Boolean = True)
-            _timer.Stop()
-            _p.Kill()
-            _startTime = Nothing
-            IsRunning = False
+            If IsRunning Then
+                _timer.Stop()
+                If Not _p.HasExited Then
+                    _p.Kill()
+                End If
+                _startTime = Nothing
+                IsRunning = False
+            End If
 
             If delete Then
-                Dim directory As String = Path.GetDirectoryName(botInformation.TempExecutablePath)
+                Dim directory As String = Path.GetDirectoryName(BotInformation.TempExecutablePath)
 
                 While Not IO.DirectoryIsEmpty(directory)
                     IO.DeleteFilesFromFolder(directory)
@@ -125,10 +130,10 @@ Namespace Manager
             If IsRunning Then Kill(True)
             IsRunning = Nothing
             IsSelected = Nothing
-            _handle  = Nothing
+            _handle = Nothing
             ExecutablePath = Nothing
-            _p.Dispose()
-            _timer.Dispose()
+            If Not _p Is Nothing Then _p.Dispose()
+            If Not _timer Is Nothing Then _timer.Dispose()
             _startTime = Nothing
         End Sub
     End Class
