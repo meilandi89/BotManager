@@ -1,6 +1,5 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Threading
-Imports BotManager.Properties
 
 Namespace Windows
     Public Class CmdLine
@@ -56,7 +55,7 @@ Namespace Windows
             CloseHandle(pi.hProcess)
             CloseHandle(pi.hThread)
 
-            Return  pi.dwProcessId
+            Return pi.dwProcessId
         End Function
 
         <StructLayout(LayoutKind.Sequential, CharSet := CharSet.Unicode)>

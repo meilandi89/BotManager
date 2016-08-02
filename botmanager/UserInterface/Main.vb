@@ -44,10 +44,10 @@ Namespace UserInterface
 
         Private Sub Main_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed
             Dim t As Task = Task.Run(Sub()
-                                         For Each bot As Generic In _bots
-                                             bot.Dispose()
-                                         Next
-                                     End Sub)
+                For Each bot As Generic In _bots
+                    bot.Dispose()
+                Next
+                                        End Sub)
             t.Wait()
             My.Settings.Save()
         End Sub
@@ -162,7 +162,7 @@ Namespace UserInterface
             Dim total As Double = 0
             For Each treeNode As TreeNode In botTree.Nodes
                 Dim bot = DirectCast(treeNode.Tag, Generic)
-                Dim contained As Boolean = False
+                Dim contained = False
                 Dim caption As New StringBuilder(256)
                 If bot.IsRunning Then
                     For Each intr In Api.GetChildWindows(_botPanel.Handle)
@@ -205,7 +205,7 @@ Namespace UserInterface
             Next
 
             statusLabel.Text = String.Format("Total Bots: {0}, Average EXP: {1}, Total EXP: {2}", botTree.Nodes.Count,
-                                             total / botTree.Nodes.Count, total)
+                                             total/botTree.Nodes.Count, total)
         End Sub
 
         Private Sub botTree_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles botTree.AfterSelect
@@ -262,16 +262,16 @@ Namespace UserInterface
 
         Private Sub KillAllBots()
             Dim t As Task = Task.Run(Sub()
-                                         For Each bot As Generic In _bots
-                                             If bot.IsRunning Then bot.Kill(False)
-                                         Next
-                                     End Sub)
+                For Each bot As Generic In _bots
+                    If bot.IsRunning Then bot.Kill(False)
+                Next
+                                        End Sub)
 
             t.Wait()
         End Sub
 
         Private Function ContainsProcess(commandLine As String)
-            Return _bots.Cast(Of Generic)().Any(Function(bot) commandLine.Contains(bot.ProcessId.ToString()))
+            Return _bots.Cast (Of Generic)().Any(Function(bot) commandLine.Contains(bot.ProcessId.ToString()))
         End Function
 
         Private Sub botsStarter_DoWork(sender As Object, e As DoWorkEventArgs) Handles batchStarter.DoWork

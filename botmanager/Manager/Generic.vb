@@ -1,7 +1,5 @@
-﻿Imports System.ComponentModel
-Imports System.Timers
+﻿Imports System.Timers
 Imports BotManager.Helpers
-Imports BotManager.List
 Imports BotManager.Properties
 Imports BotManager.Windows
 
@@ -12,14 +10,16 @@ Namespace Manager
         Public IsSelected As Boolean = False
         Public Shared PanelHandle As Integer
         Private _processId As Integer
-        Public ReadOnly Property ProcessId() As Integer
+
+        Public ReadOnly Property ProcessId As Integer
             Get
                 Return _processId
             End Get
         End Property
+
         Private _handle As IntPtr = 0
 
-        Public ReadOnly Property Handle() As IntPtr
+        Public ReadOnly Property Handle As IntPtr
             Get
                 Return _handle
             End Get
@@ -67,7 +67,7 @@ Namespace Manager
 
             UpdateBotInformation()
             PutConsoleInPanel()
-            Api.SendMessage(_p.MainWindowHandle,&H100,13,0)
+            Api.SendMessage(_p.MainWindowHandle, &H100, 13, 0)
             _timer.Start()
         End Sub
 
@@ -107,6 +107,7 @@ Namespace Manager
                 End While
             End If
         End Sub
+
         Private Sub HandleTimer(sender As Object, e As EventArgs)
             If _p.HasExited Then
                 Start()
@@ -129,7 +130,7 @@ Namespace Manager
             If IsRunning Then Kill(True)
             IsRunning = Nothing
             IsSelected = Nothing
-            _handle  = Nothing
+            _handle = Nothing
             ExecutablePath = Nothing
             _p.Dispose()
             _timer.Dispose()

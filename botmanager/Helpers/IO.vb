@@ -45,8 +45,8 @@ Namespace Helpers
 
         Public Shared Function DirectoryIsEmpty(directory As String)
             Try
-            Return System.IO.Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories).Count() = 0 AndAlso
-                   System.IO.Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Count() = 0
+                Return System.IO.Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories).Count() = 0 AndAlso
+                       System.IO.Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Count() = 0
             Catch e As DirectoryNotFoundException
                 Return True
             Catch ex As Exception

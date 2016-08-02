@@ -1,6 +1,5 @@
 ﻿Namespace Properties
     Public Class NecroSettings
-    
         Public TranslationLanguageCode As String = "en"
 'autoupdate
         Public AutoUpdate As Boolean = True
@@ -21,7 +20,7 @@
         Public DisableHumanWalking As Boolean = False
         Public DefaultAltitude As Double = 10
         Public DefaultLatitude As Double = 40.785091
-        Public DefaultLongitude As Double = -73.968285
+        Public DefaultLongitude As Double = - 73.968285
         Public WalkingSpeedInKilometerPerHour As Double = 15.0
         Public MaxSpawnLocationOffset As Integer = 10
 'delays
@@ -245,10 +244,10 @@
         'Charmender Spot
         Public PokemonToSnipe As New SnipeSettings() With { _
             .Locations = New List(Of Location)() From { _
-            New Location(38.5568074864611, -121.238379478455),
-            New Location(-33.859019, 151.213098),
-            New Location(47.5014969, -122.0959568),
-            New Location(51.5025343, -0.2055027)
+            New Location(38.5568074864611, - 121.238379478455),
+            New Location(- 33.859019, 151.213098),
+            New Location(47.5014969, - 122.0959568),
+            New Location(51.5025343, - 0.2055027)
             },
             .Pokemon = New List(Of String)() From {
             "venusaur",
@@ -315,7 +314,7 @@
             "mew",
             "mewtwo"
             }
-    
+
         Public Class Location
             Public Sub New()
             End Sub
@@ -325,7 +324,7 @@
                 Longitude = longitude__2
             End Sub
 
-            Public Property Latitude() As Double
+            Public Property Latitude As Double
                 Get
                     Return m_Latitude
                 End Get
@@ -333,8 +332,10 @@
                     m_Latitude = Value
                 End Set
             End Property
+
             Private m_Latitude As Double
-            Public Property Longitude() As Double
+
+            Public Property Longitude As Double
                 Get
                     Return m_Longitude
                 End Get
@@ -342,9 +343,9 @@
                     m_Longitude = Value
                 End Set
             End Property
+
             Private m_Longitude As Double
         End Class
-
 
 
         Public Class SnipeSettings
@@ -356,7 +357,7 @@
                 Pokemon = pokemon__2
             End Sub
 
-            Public Property Locations() As List(Of Location)
+            Public Property Locations As List(Of Location)
                 Get
                     Return m_Locations
                 End Get
@@ -364,8 +365,10 @@
                     m_Locations = Value
                 End Set
             End Property
+
             Private m_Locations As List(Of Location)
-            Public Property Pokemon() As List(Of String)
+
+            Public Property Pokemon As List(Of String)
                 Get
                     Return m_Pokemon
                 End Get
@@ -373,20 +376,22 @@
                     m_Pokemon = Value
                 End Set
             End Property
+
             Private m_Pokemon As List(Of String)
         End Class
- 
+
         Public Class TransferFilter
             Public Sub New()
             End Sub
 
-            Public Sub New(keepMinCp__1 As Integer, keepMinIvPercentage__2 As Single, keepMinDuplicatePokemon__3 As Integer)
+            Public Sub New(keepMinCp__1 As Integer, keepMinIvPercentage__2 As Single,
+                           keepMinDuplicatePokemon__3 As Integer)
                 KeepMinCp = keepMinCp__1
                 KeepMinIvPercentage = keepMinIvPercentage__2
                 KeepMinDuplicatePokemon = keepMinDuplicatePokemon__3
             End Sub
 
-            Public Property KeepMinCp() As Integer
+            Public Property KeepMinCp As Integer
                 Get
                     Return m_KeepMinCp
                 End Get
@@ -394,8 +399,10 @@
                     m_KeepMinCp = Value
                 End Set
             End Property
+
             Private m_KeepMinCp As Integer
-            Public Property KeepMinIvPercentage() As Single
+
+            Public Property KeepMinIvPercentage As Single
                 Get
                     Return m_KeepMinIvPercentage
                 End Get
@@ -403,8 +410,10 @@
                     m_KeepMinIvPercentage = Value
                 End Set
             End Property
+
             Private m_KeepMinIvPercentage As Single
-            Public Property KeepMinDuplicatePokemon() As Integer
+
+            Public Property KeepMinDuplicatePokemon As Integer
                 Get
                     Return m_KeepMinDuplicatePokemon
                 End Get
@@ -412,6 +421,7 @@
                     m_KeepMinDuplicatePokemon = Value
                 End Set
             End Property
+
             Private m_KeepMinDuplicatePokemon As Integer
         End Class
 
@@ -480,8 +490,9 @@
 
         Public Class OriginalNameAttribute
             Inherits Attribute
+
             ''' <summary>The name of the element in the .proto file.</summary>
-            Public Property Name() As String
+            Public Property Name As String
                 Get
                     Return m_Name
                 End Get
@@ -489,18 +500,16 @@
                     m_Name = Value
                 End Set
             End Property
+
             Private m_Name As String
 
             ''' <summary>
-            ''' Constructs a new attribute instance for the given name.
+            '''     Constructs a new attribute instance for the given name.
             ''' </summary>
             ''' <param name="name">The name of the element in the .proto file.</param>
             Public Sub New(name As String)
                 Me.Name = name
             End Sub
         End Class
-
-
-
     End Class
 End NameSpace

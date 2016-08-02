@@ -2,7 +2,7 @@
 
 Namespace Properties
     Public Class SupportedBotInformation
-        Implements Interfaces.ISettings
+        Implements ISettings
         Public Property Name As String
         Public Property ZipName As String
         Public Property UnZip As Boolean = True

@@ -1,8 +1,13 @@
-﻿Namespace UserInterface
+﻿Imports BotManager.Interfaces
+Imports BotManager.List
+Imports BotManager.Properties
+
+Namespace UserInterface
     Public Class SettingsEditor
-        Private ReadOnly _botProperties As Properties.BotInformation
-        Public BatchAddProperties As List(Of Properties.BotInformation)
-        Public Sub New(ByRef botProperties As Properties.BotInformation)
+        Private ReadOnly _botProperties As BotInformation
+        Public BatchAddProperties As List(Of BotInformation)
+
+        Public Sub New(ByRef botProperties As BotInformation)
 
             ' This call is required by the designer.
             InitializeComponent()
@@ -10,25 +15,27 @@
             ' Add any initialization after the InitializeComponent() call.
             _botProperties = botProperties
         End Sub
+
         Private Sub SettingsEditor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             If _botProperties.SettingValues.Count > 0 Then
                 AddToGridView(_botProperties)
             Else
                 Select Case _botProperties.BotClass
                     Case "BotManager.Manager.Haxton"
-                        AddToGridView(List.OfSupportedBots.GetInstance()("Haxton"))
+                        AddToGridView(OfSupportedBots.GetInstance()("Haxton"))
                     Case "BotManager.Manager.Spegeli"
-                        AddToGridView(List.OfSupportedBots.GetInstance()("Spegeli"))
+                        AddToGridView(OfSupportedBots.GetInstance()("Spegeli"))
                     Case "BotManager.Manager.Necro"
-                        AddToGridView(List.OfSupportedBots.GetInstance()("Necro"))
+                        AddToGridView(OfSupportedBots.GetInstance()("Necro"))
                 End Select
             End If
         End Sub
-        Private Sub AddToGridView(supportedBotInformation As Interfaces.ISettings)
+
+        Private Sub AddToGridView(supportedBotInformation As ISettings)
             Dim newTable As New DataTable
             newTable.Columns.Add("Name")
             newTable.Columns.Add("Value")
-            For i As Integer = 0 To supportedBotInformation.SettingKeys.Count - 1
+            For i = 0 To supportedBotInformation.SettingKeys.Count - 1
                 newTable.Rows.Add(supportedBotInformation.SettingKeys(i), supportedBotInformation.SettingValues(i))
                 _botProperties.AddKeyValue(supportedBotInformation.SettingKeys(i),
                                            supportedBotInformation.SettingValues(i))
@@ -38,10 +45,11 @@
             chkHide.Checked = _botProperties.Hide
             DataGridView1.DataSource = newTable
         End Sub
-        Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-            BatchAddProperties = New List(Of Properties.BotInformation)
 
-            For row As Integer = 0 To DataGridView1.Rows.Count - 2
+        Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+            BatchAddProperties = New List(Of BotInformation)
+
+            For row = 0 To DataGridView1.Rows.Count - 2
                 _botProperties.SettingValues.Item(row) = DataGridView1.Rows(row).Cells(1).Value.ToString()
             Next
 
@@ -54,15 +62,15 @@
                     Dim reader As New StreamReader(fileLoc.Text)
                     Dim content = reader.ReadToEnd().Trim().Split(vbCrLf)
                     reader.Dispose()
-                    Dim newBotProperty As Properties.BotInformation
+                    Dim newBotProperty As BotInformation
 
 
                     For Each line As String In content
-                        newBotProperty = New Properties.BotInformation()
+                        newBotProperty = New BotInformation()
                         newBotProperty.Hide = _botProperties.Hide
                         newBotProperty.RestartTimer = _botProperties.RestartTimer
                         newBotProperty.BotClass = _botProperties.BotClass
-                        For i As Integer = 0 To _botProperties.SettingKeys.Count - 1
+                        For i = 0 To _botProperties.SettingKeys.Count - 1
                             newBotProperty.AddKeyValue(_botProperties.SettingKeys(i), _botProperties.SettingValues(i))
                         Next
 
@@ -88,13 +96,16 @@
 
             DialogResult = DialogResult.OK
         End Sub
+
         Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
             DialogResult = DialogResult.Cancel
         End Sub
+
         Private Sub chkBatchAdd_CheckedChanged(sender As Object, e As EventArgs) Handles chkBatchAdd.CheckedChanged
             browseBtn.Enabled = chkBatchAdd.Checked
             fileLoc.Enabled = chkBatchAdd.Checked
         End Sub
+
         Private Sub browseBtn_Click(sender As Object, e As EventArgs) Handles browseBtn.Click
             Using LD As New OpenFileDialog()
                 LD.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"

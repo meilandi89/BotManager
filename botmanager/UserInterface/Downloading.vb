@@ -1,12 +1,11 @@
-﻿Imports System.Configuration
+﻿Imports System.ComponentModel
+Imports System.Configuration
+Imports System.Threading
 Imports BotManager.Helpers
 Imports BotManager.List
 Imports BotManager.Properties
 Imports BotManager.Windows
-Imports Newtonsoft.Json
-Imports Newtonsoft.Json.Converters
 Imports Newtonsoft.Json.Linq
-Imports Newtonsoft.Json.Serialization
 
 Namespace UserInterface
     Public Class Downloading
@@ -16,20 +15,20 @@ Namespace UserInterface
         Private _compIncrement As Integer = 0
         Private _currentComp As Integer = 0
 
-        Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
+        Private Sub BackgroundWorker1_DoWork(sender As Object, e As DoWorkEventArgs) _
             Handles BackgroundWorker1.DoWork
 
-            _compIncrement = 100/(List.OfSupportedBots.GetInstance().Count*5)
+            _compIncrement = 100/(OfSupportedBots.GetInstance().Count*5)
 
-            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
+            For Each supportedBotInformation As SupportedBotInformation In OfSupportedBots.GetInstance().Values
                 Try
                     InstallBotFirstStep(supportedBotInformation)
                 Catch ex As Exception
-                   ' MsgBox(ex.Message)
+                    ' MsgBox(ex.Message)
                 End Try
             Next
 
-            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
+            For Each supportedBotInformation As SupportedBotInformation In OfSupportedBots.GetInstance().Values
                 Try
                     InstallBotSecondStep(supportedBotInformation)
                 Catch ex As Exception
@@ -38,11 +37,11 @@ Namespace UserInterface
             Next
 
             BackgroundWorker1.ReportProgress(0, "Complete")
-            Threading.Thread.Sleep(500)
+            Thread.Sleep(500)
         End Sub
 
         Private Sub BackgroundWorker1_ReportProgress(sender As Object,
-                                                     e As System.ComponentModel.ProgressChangedEventArgs) _
+                                                     e As ProgressChangedEventArgs) _
             Handles BackgroundWorker1.ProgressChanged
             _currentComp += e.ProgressPercentage
             downloadProgress.Value = _currentComp
@@ -50,7 +49,7 @@ Namespace UserInterface
         End Sub
 
         Private Sub BackgroundWorker1_RunWorkerCompleted(sender As Object,
-                                                         e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+                                                         e As RunWorkerCompletedEventArgs) _
             Handles BackgroundWorker1.RunWorkerCompleted
             DialogResult = DialogResult.OK
             Main.Show()
@@ -83,8 +82,8 @@ Namespace UserInterface
                 _currentComp += _compIncrement
                 Exit Sub
             End If
-                BackgroundWorker1.ReportProgress(_compIncrement, "Downloading " & supportedBotInformation.Name)
-                Http.DownloadRepository(supportedBotInformation.DownloadUrl, supportedBotInformation.ZipName)
+            BackgroundWorker1.ReportProgress(_compIncrement, "Downloading " & supportedBotInformation.Name)
+            Http.DownloadRepository(supportedBotInformation.DownloadUrl, supportedBotInformation.ZipName)
         End Sub
 
         Private Sub UnZipBot(ByRef supportedBotInformation As SupportedBotInformation)
@@ -92,14 +91,14 @@ Namespace UserInterface
                 _currentComp += _compIncrement
                 Exit Sub
             End If
-                BackgroundWorker1.ReportProgress(_compIncrement, "Unzipping " & supportedBotInformation.Name)
-                IO.Unzip(supportedBotInformation.ZipName, supportedBotInformation.UnZipDirectory)
-                If supportedBotInformation.MoveFolder Then
-                    Directory.Delete(supportedBotInformation.MoveTo)
-                    Directory.Move(supportedBotInformation.WorkingDirectory, supportedBotInformation.MoveTo)
-                    Directory.Delete(supportedBotInformation.Name)
-                End If
-                File.Delete(supportedBotInformation.ZipName)
+            BackgroundWorker1.ReportProgress(_compIncrement, "Unzipping " & supportedBotInformation.Name)
+            IO.Unzip(supportedBotInformation.ZipName, supportedBotInformation.UnZipDirectory)
+            If supportedBotInformation.MoveFolder Then
+                Directory.Delete(supportedBotInformation.MoveTo)
+                Directory.Move(supportedBotInformation.WorkingDirectory, supportedBotInformation.MoveTo)
+                Directory.Delete(supportedBotInformation.Name)
+            End If
+            File.Delete(supportedBotInformation.ZipName)
         End Sub
 
         Private Sub DownloadBotPackages(ByRef supportedBotInformation As SupportedBotInformation)
@@ -107,13 +106,13 @@ Namespace UserInterface
                 _currentComp += _compIncrement
                 Exit Sub
             End If
-                BackgroundWorker1.ReportProgress(_compIncrement,
-                                                 "Downloading packages for " & supportedBotInformation.Name)
-                Dim nugetInfo As New ProcessStartInfo
-                nugetInfo.FileName = Nuget
-                nugetInfo.Arguments = NugetArgument & supportedBotInformation.WorkingDirectory
-                nugetInfo.WindowStyle = ProcessWindowStyle.Hidden
-                CmdLine.Run(nugetInfo, True)
+            BackgroundWorker1.ReportProgress(_compIncrement,
+                                             "Downloading packages for " & supportedBotInformation.Name)
+            Dim nugetInfo As New ProcessStartInfo
+            nugetInfo.FileName = Nuget
+            nugetInfo.Arguments = NugetArgument & supportedBotInformation.WorkingDirectory
+            nugetInfo.WindowStyle = ProcessWindowStyle.Hidden
+            CmdLine.Run(nugetInfo, True)
         End Sub
 
         Private Sub CompileBot(ByRef supportedBotInformation As SupportedBotInformation)
@@ -121,12 +120,12 @@ Namespace UserInterface
                 _currentComp += _compIncrement
                 Exit Sub
             End If
-                BackgroundWorker1.ReportProgress(_compIncrement, "Compiling " & supportedBotInformation.Name)
-                Dim msBuildInfo As New ProcessStartInfo
-                msBuildInfo.WorkingDirectory = supportedBotInformation.WorkingDirectory
-                msBuildInfo.FileName = Chr(34) & MsBuild & Chr(34)
-                msBuildInfo.WindowStyle = ProcessWindowStyle.Hidden
-                CmdLine.Run(msBuildInfo, True)
+            BackgroundWorker1.ReportProgress(_compIncrement, "Compiling " & supportedBotInformation.Name)
+            Dim msBuildInfo As New ProcessStartInfo
+            msBuildInfo.WorkingDirectory = supportedBotInformation.WorkingDirectory
+            msBuildInfo.FileName = Chr(34) & MsBuild & Chr(34)
+            msBuildInfo.WindowStyle = ProcessWindowStyle.Hidden
+            CmdLine.Run(msBuildInfo, True)
         End Sub
 
         Private Sub RunAndKill(ByRef supportedBotInformation As SupportedBotInformation)
@@ -140,9 +139,9 @@ Namespace UserInterface
             pInfo.FileName = Path.GetFileName(supportedBotInformation.ExecutablePath)
             pInfo.WindowStyle = ProcessWindowStyle.Minimized
             Dim p As Process = CmdLine.Run(pInfo, False)
-            
-            Threading.Thread.Sleep(3000)
-            If Not p Is Nothing AndAlso Not p.HasExited  Then p.Kill()
+
+            Thread.Sleep(3000)
+            If Not p Is Nothing AndAlso Not p.HasExited Then p.Kill()
         End Sub
 
         Private Sub AddSettings(ByRef supportedBotInformation As SupportedBotInformation)
@@ -169,8 +168,8 @@ Namespace UserInterface
             Dim auth As String =
                     New StreamReader(Path.GetDirectoryName(supportedBotInformation.ExecutablePath) & "\Config\auth.json") _
                     .ReadToEnd()
-            Dim jObjectSettings As JObject = Linq.JObject.Parse(settings)
-            Dim jObjectAuth As JObject = Linq.JObject.Parse(auth)
+            Dim jObjectSettings As JObject = JObject.Parse(settings)
+            Dim jObjectAuth As JObject = JObject.Parse(auth)
 
             For each jO As JProperty IN jObjectAuth.Children()
                 If (jO.Value.GetType().ToString().Contains("Newtonsoft.Json.Linq.JValue")) Then
@@ -233,19 +232,6 @@ Namespace UserInterface
                 MsgBox("Install MSBuild")
                 End
             End If
-            If Not Directory.Exists("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5") Then
-                MsgBox("Install .NETFramework v3.5")
-                End
-            ElseIf Not Directory.Exists("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0")
-                MsgBox("Install .NETFramework v4.0") 
-                End
-            ElseIf Not Directory.Exists("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5") 
-                MsgBox("Install .NETFramework v4.5") 
-                End
-            ElseIf Not Directory.Exists("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2") 
-                MsgBox("Install .NETFramework v4.5.2") 
-                End
-            End If
             If Not Installed Then
                 BackgroundWorker1.RunWorkerAsync()
                 Me.Size = New Size("296", "92")
@@ -253,20 +239,20 @@ Namespace UserInterface
                 btnYes.Visible = True
                 btnNo.Visible = True
             End If
-            Control.CheckForIllegalCrossThreadCalls = False
+            CheckForIllegalCrossThreadCalls = False
         End Sub
 
         Private Sub Downloading_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
-            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
+            For Each supportedBotInformation As SupportedBotInformation In OfSupportedBots.GetInstance().Values
                 If supportedBotInformation.ReadSettings Then AddSettings(supportedBotInformation)
 
             Next
 
-            BotManager.Helpers.IO.DeleteFilesFromFolder(Helpers.IO.AppData)
+            IO.DeleteFilesFromFolder(IO.AppData)
         End Sub
 
         Private Function Installed() As Boolean
-            For Each supportedBotInformation As SupportedBotInformation In List.OfSupportedBots.GetInstance().Values
+            For Each supportedBotInformation As SupportedBotInformation In OfSupportedBots.GetInstance().Values
                 If _
                     supportedBotInformation.Compile AndAlso
                     Not Directory.Exists(supportedBotInformation.WorkingDirectory & "\") Then
