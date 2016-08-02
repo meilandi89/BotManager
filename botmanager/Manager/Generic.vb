@@ -132,8 +132,8 @@ Namespace Manager
             IsSelected = Nothing
             _handle = Nothing
             ExecutablePath = Nothing
-            _p.Dispose()
-            _timer.Dispose()
+            If Not _p Is Nothing Then _p.Dispose()
+            If Not _timer Is Nothing Then _timer.Dispose()
             _startTime = Nothing
         End Sub
     End Class

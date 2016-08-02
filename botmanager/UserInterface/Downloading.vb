@@ -227,7 +227,6 @@ Namespace UserInterface
         End Sub
 
         Private Sub Downloading_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-            'temp solution
             If Not File.Exists(MsBuild) Then
                 MsgBox("Install MSBuild")
                 End

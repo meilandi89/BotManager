@@ -145,7 +145,7 @@ Namespace UserInterface
             Handles repLabel.LinkClicked
             repLabel.LinkVisited = True
             Process.Start(
-                "http://www.ownedcore.com/forums/pokemon-go/pokemon-go-hacks-cheats/566095-bot-manager-auto-update-includes-multiple-bots-multi-account.html")
+                "http://www.ownedcore.com/forums/pokemon-go/pokemon-go-hacks-cheats/568064-bot-manager-spegeli-necro-haxton-all-one-multi-account-1000-a.html")
         End Sub
 
         Private Sub paypalLabel_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs) _
