@@ -59,7 +59,7 @@ Namespace Manager
             Dim pInfo As New ProcessStartInfo
             pInfo.WorkingDirectory = Path.GetDirectoryName(botInformation.TempExecutablePath)
             pInfo.FileName = Path.GetFileName(botInformation.TempExecutablePath)
-
+            pInfo.WindowStyle = ProcessWindowStyle.Maximized
             Dim p As Process = CmdLine.Run(pInfo, False)
 
             _p = Nothing

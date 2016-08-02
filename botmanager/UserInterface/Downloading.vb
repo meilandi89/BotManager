@@ -157,8 +157,8 @@ Namespace UserInterface
                 End Select
             Else
                 Msgbox("Bot Manager failed to compile bot: " & supportedBotInformation.Name)
-                Process.Start(
-                    "http://www.ownedcore.com/forums/pokemon-go/pokemon-go-hacks-cheats/566095-bot-manager-auto-update-includes-multiple-bots-multi-account.html")
+                ' Process.Start(
+                '  "http://www.ownedcore.com/forums/pokemon-go/pokemon-go-hacks-cheats/566095-bot-manager-auto-update-includes-multiple-bots-multi-account.html")
             End If
         End Sub
 
