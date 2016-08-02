@@ -17,8 +17,7 @@ Namespace Properties
         Public Property DeleteOld As Boolean = True
         Public Property MoveFolder As Boolean = False
         Public Property MoveTo As String
-
-
+        Public Property BotClass As String
 
         Public Property SettingKeys As New List(Of String) Implements ISettings.SettingKeys
 

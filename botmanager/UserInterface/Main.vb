@@ -31,8 +31,6 @@ Namespace UserInterface
 
         Private Sub Main_HasLoad(sender As Object, e As EventArgs) Handles MyBase.Shown
             Generic.PanelHandle = botPanel.Handle
-            'If New Downloading().ShowDialog() = DialogResult.OK Then
-            'End If
             If My.Settings.ListOfPropertiesBots Is Nothing Then
                 My.Settings.ListOfPropertiesBots = New OfPropertiesBots
             Else
@@ -172,11 +170,13 @@ Namespace UserInterface
                     If str.Length >= 2 Then
                         Dim parts
                         If (bot.BotInformation.BotClass = "BotManager.Manager.Haxton") Then
-                            parts = str(1).Split("-")
+                            parts = str(1).Split("-")(2)
                         ElseIf (bot.BotInformation.BotClass = "BotManager.Manager.Spegeli") Then
-                            parts = str(0).Split("(")(0).Split("-")
+                            parts = str(0).Split("(")(0).Split("-")(2)
+                        ElseIf (bot.BotInformation.BotClass = "BotManager.Manager.Necro") Then
+                            parts = str(0).Split("-")(2).Split("(")(0)
                         End If
-                        Dim lvl = parts(2)
+                        Dim lvl = parts
                         Dim exp = str(2)
                         Dim poke = str(3)
                         treeNode.Text = treeNode.Name

@@ -30,7 +30,8 @@ Namespace List
                           .WorkingDirectory = "Spegeli/PokemoGoBot-GottaCatchEmAll-master",
                           .ZipName = "Spegeli.zip",
                           .UnZipDirectory = "Spegeli",
-                          .ExecutablePath = "Spegeli/PokemoGoBot-GottaCatchEmAll-master/PokemonGo.RocketAPI.Console/bin/Debug/PokemonGo.RocketAPI.Console.exe"})
+                          .ExecutablePath = "Spegeli/PokemoGoBot-GottaCatchEmAll-master/PokemonGo.RocketAPI.Console/bin/Debug/PokemonGo.RocketAPI.Console.exe",
+                          .BotClass = "BotManager.Manager.Spegeli"})
 
                     _instances.Add("Haxton", New SupportedBotInformation() With {
                           .Name = "Haxton", 
@@ -38,7 +39,8 @@ Namespace List
                           .WorkingDirectory = "Haxton/HaxtonBot-master",
                           .ZipName = "Haxton.zip",
                           .UnZipDirectory = "Haxton",
-                          .ExecutablePath = "Haxton/HaxtonBot-master/PokemonGo.Haxton.Console/bin/Debug/PokemonGo.Haxton.Console.exe"})
+                          .ExecutablePath = "Haxton/HaxtonBot-master/PokemonGo.Haxton.Console/bin/Debug/PokemonGo.Haxton.Console.exe",
+                          .BotClass = "BotManager.Manager.Haxton"})
 
                    _instances.Add("Necro", New SupportedBotInformation() With {
                           .Name = "Necro", 
@@ -47,7 +49,7 @@ Namespace List
                           .ZipName = "Necro.zip",
                           .UnZipDirectory = "Necro",
                           .ExecutablePath = "Necro/NecroBot-master/PoGo.NecroBot.CLI/bin/Debug/NecroBot.exe",
-                          .DisplayAsBot = False})
+                          .BotClass = "BotManager.Manager.Necro"})
 
                   _instances.Add("NecroAPI", New SupportedBotInformation() With {
                           .Name = "NecroAPI", 

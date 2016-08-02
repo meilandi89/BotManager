@@ -33,6 +33,7 @@ Namespace Manager
         Private _startTime As Date = Nothing
         Public MustOverride Sub WriteSettings()
 
+
         Public Sub New(ByRef botInformation As BotInformation)
             Me.botInformation = botInformation
             _timer.Stop()
@@ -66,7 +67,7 @@ Namespace Manager
 
             UpdateBotInformation()
             PutConsoleInPanel()
-
+            Api.SendMessage(_p.MainWindowHandle,&H100,13,0)
             _timer.Start()
         End Sub
 
@@ -91,10 +92,13 @@ Namespace Manager
         Public Sub Kill(Optional delete As Boolean = True)
             If IsRunning Then
                 _timer.Stop()
-                _p.Kill()
+                If Not _p.HasExited Then
+                    _p.Kill()
+                End If
                 _startTime = Nothing
                 IsRunning = False
             End If
+
             If delete Then
                 Dim directory As String = Path.GetDirectoryName(BotInformation.TempExecutablePath)
 

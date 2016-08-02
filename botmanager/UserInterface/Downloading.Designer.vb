@@ -34,7 +34,7 @@
         '
         Me.downloadLabel.AutoSize = true
         Me.downloadLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.downloadLabel.Location = New System.Drawing.Point(8, 9)
+        Me.downloadLabel.Location = New System.Drawing.Point(6, 6)
         Me.downloadLabel.Name = "downloadLabel"
         Me.downloadLabel.Size = New System.Drawing.Size(142, 18)
         Me.downloadLabel.TabIndex = 0
@@ -54,7 +54,7 @@
         'btnYes
         '
         Me.btnYes.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.btnYes.Location = New System.Drawing.Point(153, 7)
+        Me.btnYes.Location = New System.Drawing.Point(153, 4)
         Me.btnYes.Margin = New System.Windows.Forms.Padding(2)
         Me.btnYes.Name = "btnYes"
         Me.btnYes.Size = New System.Drawing.Size(56, 23)
@@ -66,7 +66,7 @@
         'btnNo
         '
         Me.btnNo.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.btnNo.Location = New System.Drawing.Point(213, 7)
+        Me.btnNo.Location = New System.Drawing.Point(213, 4)
         Me.btnNo.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNo.Name = "btnNo"
         Me.btnNo.Size = New System.Drawing.Size(56, 23)
@@ -79,7 +79,7 @@
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(280, 35)
+        Me.ClientSize = New System.Drawing.Size(280, 30)
         Me.Controls.Add(Me.btnNo)
         Me.Controls.Add(Me.btnYes)
         Me.Controls.Add(Me.downloadLabel)
@@ -90,6 +90,8 @@
         Me.MinimizeBox = false
         Me.MinimumSize = New System.Drawing.Size(296, 69)
         Me.Name = "Downloading"
+        Me.ShowIcon = false
+        Me.ShowInTaskbar = false
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Download Manager"

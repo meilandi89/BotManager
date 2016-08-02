@@ -84,6 +84,11 @@
     <ManifestKeyFile>BotManager_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Newtonsoft.Json.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -121,6 +126,7 @@
     <Compile Include="Helpers\IO.vb" />
     <Compile Include="Helpers\Json.vb" />
     <Compile Include="Properties\BotInformation.vb" />
+    <Compile Include="Properties\NecroSettings.vb" />
     <Compile Include="Properties\SupportedBotInformation.vb" />
     <Compile Include="Manager\Haxton.vb" />
     <Compile Include="Manager\Necro.vb" />
@@ -192,8 +198,10 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\Debug\Newtonsoft.Json.dll" />
     <Content Include="Chansey-Dribbble.ico" />
   </ItemGroup>
   <ItemGroup>

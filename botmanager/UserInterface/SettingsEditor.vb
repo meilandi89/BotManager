@@ -19,6 +19,8 @@
                         AddToGridView(List.OfSupportedBots.GetInstance()("Haxton"))
                     Case "BotManager.Manager.Spegeli"
                         AddToGridView(List.OfSupportedBots.GetInstance()("Spegeli"))
+                    Case "BotManager.Manager.Necro"
+                        AddToGridView(List.OfSupportedBots.GetInstance()("Necro"))
                 End Select
             End If
         End Sub
