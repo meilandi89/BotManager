@@ -228,6 +228,8 @@ Namespace UserInterface
         End Sub
 
         Private Sub Downloading_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+            If File.Exists("BotManager.exe.old") Then File.Delete("BotManager.exe.old")
+            CheckForUpdates()
             If Not File.Exists(MsBuild) Then
                 MsgBox("Install MSBuild")
                 End
@@ -240,6 +242,31 @@ Namespace UserInterface
                 btnNo.Visible = True
             End If
             CheckForIllegalCrossThreadCalls = False
+        End Sub
+        Private Sub CheckForUpdates()
+            Dim githubVersion As String = ""
+            Try
+                Dim request As HttpWebRequest = HttpWebRequest.Create("https://raw.githubusercontent.com/chancity/BotManager/master/version")
+                request.Proxy = Nothing
+                request.UserAgent = "Pokemon"
+                Dim response As HttpWebResponse = request.GetResponse
+                Dim responseStream As System.IO.Stream = response.GetResponseStream
+                Dim streamReader As New System.IO.StreamReader(responseStream)
+                Dim data As String = streamReader.ReadToEnd
+                streamReader.Close()
+                githubVersion = data.ToString.Trim()
+            Catch ex As Exception
+
+            End Try
+            If githubVersion = "" = False Then
+                If Application.ProductVersion = githubVersion = False Then
+                    My.Computer.FileSystem.RenameFile("BotManager.exe", "BotManager.exe.old")
+                    Http.DownloadRepository("https://github.com/chancity/BotManager/raw/master/download/BotManager.exe", "BotManager.exe")
+                    MsgBox("Program has been updated! Restarting")
+                    Process.Start("BotManager.exe")
+                    End
+                End If
+            End If
         End Sub
         Private Sub Downloading_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
             For Each supportedBotInformation As SupportedBotInformation In OfSupportedBots.GetInstance().Values
