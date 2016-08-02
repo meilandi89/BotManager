@@ -162,9 +162,19 @@ Namespace UserInterface
             Dim total As Double = 0
             For Each treeNode As TreeNode In botTree.Nodes
                 Dim bot = DirectCast(treeNode.Tag, Generic)
-
+                Dim contained As Boolean = False
+                 Dim caption As New StringBuilder(256)
                 If bot.IsRunning Then
-                    Dim caption As New StringBuilder(256)
+                    For Each intr In Api.GetChildWindows(_botPanel.Handle)
+                        If intr = bot.Handle Then 
+                            contained = True
+                            Exit For
+                        End If
+                    Next
+                    If Not contained Then
+                        bot.PutConsoleInPanel()
+                    End If
+                    caption.Clear()
                     Api.GetWindowText(bot.Handle, caption, caption.Capacity)
                     Dim str As String() = caption.ToString.Split("|")
                     If str.Length >= 2 Then

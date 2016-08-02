@@ -140,10 +140,9 @@ Namespace UserInterface
             pInfo.FileName = Path.GetFileName(supportedBotInformation.ExecutablePath)
             pInfo.WindowStyle = ProcessWindowStyle.Minimized
             Dim p As Process = CmdLine.Run(pInfo, False)
-            If Not p Is Nothing Then 
-                Threading.Thread.Sleep(3000)
-                p.Kill()
-            End If
+            
+            Threading.Thread.Sleep(3000)
+            If Not p Is Nothing AndAlso Not p.HasExited  Then p.Kill()
         End Sub
 
         Private Sub AddSettings(ByRef supportedBotInformation As SupportedBotInformation)
@@ -229,8 +228,22 @@ Namespace UserInterface
         End Sub
 
         Private Sub Downloading_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+            'temp solution
             If Not File.Exists(MsBuild) Then
-                MsgBox("Please install all the required software!")
+                MsgBox("Install MSBuild")
+                End
+            End If
+            If Not Directory.Exists("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5") Then
+                MsgBox("Install .NETFramework v3.5")
+                End
+            ElseIf Not Directory.Exists("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0")
+                MsgBox("Install .NETFramework v4.0") 
+                End
+            ElseIf Not Directory.Exists("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5") 
+                MsgBox("Install .NETFramework v4.5") 
+                End
+            ElseIf Not Directory.Exists("C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2") 
+                MsgBox("Install .NETFramework v4.5.2") 
                 End
             End If
             If Not Installed Then

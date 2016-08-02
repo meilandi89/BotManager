@@ -17,9 +17,9 @@ Namespace Manager
                 Return _processId
             End Get
         End Property
-        Private _handle As Integer = 0
+        Private _handle As IntPtr = 0
 
-        Public ReadOnly Property Handle() As Integer
+        Public ReadOnly Property Handle() As IntPtr
             Get
                 Return _handle
             End Get
@@ -77,7 +77,7 @@ Namespace Manager
             IsRunning = True
         End Sub
 
-        Private Sub PutConsoleInPanel()
+        Public Sub PutConsoleInPanel()
             Api.SetParent(_handle, PanelHandle)
 
             If IsSelected Then
