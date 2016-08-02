@@ -79,6 +79,7 @@
                     Next
                 Catch ex As Exception
                     MsgBox(ex.Message)
+                    MsgBox(ex.StackTrace)
                     Exit Sub
                 End Try
             Else
