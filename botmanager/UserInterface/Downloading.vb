@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Configuration
+Imports System.Net
 Imports System.Threading
 Imports BotManager.Helpers
 Imports BotManager.List
@@ -240,7 +241,6 @@ Namespace UserInterface
             End If
             CheckForIllegalCrossThreadCalls = False
         End Sub
-
         Private Sub Downloading_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
             For Each supportedBotInformation As SupportedBotInformation In OfSupportedBots.GetInstance().Values
                 If supportedBotInformation.ReadSettings Then AddSettings(supportedBotInformation)
